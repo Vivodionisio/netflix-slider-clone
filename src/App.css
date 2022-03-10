@@ -1,0 +1,48 @@
+.App {
+  --ItemWidth: 15.3333333333%;
+  --ItemHeight: 9.19999999998vw;
+}
+
+.ContentScroller {
+  position: relative;
+  height: calc(var(--ItemHeight));
+  overflow-x: hidden;
+  overflow-y: visible;
+  width: 100%;
+}
+
+.ContentScroller .ContentItem {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: var(--ItemWidth);
+  transition: left 1s;
+}
+
+.ContentScroller > button {
+  /* Left & right buttons for moving the content. */
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.ContentScroller > button.view-previous {
+  left: 0px;
+}
+.ContentScroller > button.view-next {
+  right: 0px;
+}
+
+.ContentItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ContentItem img {
+  width: 96.875%;
+  border-radius: 3px;
+}
