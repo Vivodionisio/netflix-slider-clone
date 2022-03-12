@@ -1,13 +1,17 @@
 .App {
   --ItemWidth: 15.3333333333%;
-  --ItemHeight: 9.19999999998vw;
+  --ItemHeight: 8.385vw;
+  --imageWidth: 96.875%;
+  height: 100vh;
+  background: rgb(20, 20, 20);
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .ContentScroller {
   position: relative;
-  height: calc(var(--ItemHeight));
-  overflow-x: hidden;
-  overflow-y: visible;
+  top: 100px;
+  height: var(--ItemHeight);
   width: 100%;
 }
 
@@ -15,34 +19,185 @@
   position: absolute;
   left: 0px;
   top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: visible;
   width: var(--ItemWidth);
   transition: left 1s;
 }
 
+.ContentScroller .ContentItem img {
+  z-index: 0;
+  width: var(--imageWidth);
+  border-radius: 3.5px;
+  transition: width 0.3s;
+}
+
+.ContentScroller .ContentItem.active img {
+  width: calc(var(--imageWidth) * 1.5);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 300;
+  transition: width 0.3s, top 0.3s, transform 0.3s, z-index 0.4s;
+  transition-delay: 0.4s;
+}
+
+.ContentScroller .ContentItem .card {
+  height: 0;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 0;
+  width: var(--imageWidth);
+  transition: width 0.3s, opacity 0.3s, visibility;
+}
+
+.ContentScroller .ContentItem.active .card {
+  height: auto;
+  visibility: visible;
+  opacity: 1;
+  width: calc(var(--imageWidth) * 1.5);
+  z-index: 300;
+  transition: width 0.3s, opacity 0.3s, transform 0.3s, z-index 0.4s;
+  transition-delay: 0.4s;
+}
+.ContentScroller .ContentItem.active .card {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 3.5px;
+  border-bottom-right-radius: 3.5px;
+}
+
+.ContentScroller .ContentItem.on-top img {
+  z-index: 400;
+}
+
+/* .ContentScroller .ContentItem .card {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background: pink;
+  visibility: hidden;  */
+/* height: 0;
+  width: var(--imageWidth);
+  opacity: 0;
+}
+
+.ContentScroller .ContentItem.active .card {
+  visibility: visible; */
+/* height: auto;
+  width: calc(var(--imageWidth) * 1.5);
+  opacity: 1;
+  transition: opacity 0.3s, height 0.2s;
+  transition-delay: 0.4s;
+}
+
+/* Item Card */
+.ContentScroller .ContentItem .card {
+  background-color: rgb(36, 36, 36);
+  color: white;
+}
+
+.ContentScroller .ContentItem .card .engagements {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ContentScroller .ContentItem .card .engagements button {
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background-color: transparent;
+  color: white;
+  position: relative;
+  display: inline-block;
+  aspect-ratio: 1 / 1;
+  width: 15%;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.ContentScroller .ContentItem .card .engagements button .circle {
+  position: absolute;
+}
+
+.ContentScroller .ContentItem .card .engagements button .icon {
+  position: absolute;
+  height: 45%;
+  width: 45%;
+}
+.ContentScroller .ContentItem .card .engagements button:first-child .icon {
+  fill: black;
+  left: 17.5%;
+  height: 70%;
+  width: 70%;
+}
+
+.ContentScroller
+  .ContentItem
+  .card
+  .engagements
+  button:first-child:hover
+  .circle {
+  fill: green !important;
+}
+
+.ContentScroller .ContentItem .card .engagements button:hover .circle {
+  fill: green !important;
+}
+
+/* Left & right buttons for moving the content. */
 .ContentScroller > button {
-  /* Left & right buttons for moving the content. */
   position: absolute;
   top: 50%;
+  width: 3.77vw;
+  width: 4vw;
+  height: var(--ItemHeight);
+  background: #0000006e;
   transform: translate(0, -50%);
-  background: transparent;
   border: none;
   color: white;
   cursor: pointer;
 }
 .ContentScroller > button.view-previous {
-  left: 0px;
+  left: 0;
+  border-top-right-radius: 3.5px;
+  border-bottom-right-radius: 3.5px;
 }
+
 .ContentScroller > button.view-next {
-  right: 0px;
+  right: 0;
+  border-top-left-radius: 3.5px;
+  border-bottom-left-radius: 3.5px;
 }
 
-.ContentItem {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.ContentScroller:hover > button.view-previous,
+.ContentScroller:hover > button.view-next {
+  background: #0000009f;
 }
 
-.ContentItem img {
-  width: 96.875%;
-  border-radius: 3px;
+.ContentScroller > button.view-previous,
+.ContentScroller > button.view-previous svg,
+.ContentScroller > button.view-next svg {
+  fill: white;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.ContentScroller:hover > button.view-previous.visible,
+.ContentScroller:hover > button.view-previous.visible svg,
+.ContentScroller:hover > button.view-next svg {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.4s;
+}
+
+.ContentScroller > button svg {
+  width: 40%;
+}
+.ContentScroller > button:hover svg {
+  width: 50%;
 }

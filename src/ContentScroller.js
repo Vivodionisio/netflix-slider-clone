@@ -1,14 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ContentItem from './ContentItem.js'
+import { ChevronLeft, ChevronRight } from './assets/images/svgs.js'
 
 const ItemSpace = 15.3333333333 // was 110 - width of item (100px) + spacing (10px)
 
 function ContentScroller({ titles }) {
   const [startIndex, setStart] = useState(0),
     [baseId, setBase] = useState(5000), // key
-    [initial, setInitial] = useState(true)
+    [initial, setInitial] = useState(true),
+    [btnDisabled, setBtnDisabled] = useState(false)
 
-  console.log(titles)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setBtnDisabled(false)
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [btnDisabled])
 
   // Build array to render: first six viewable
   // note: here 'next' is the end point
@@ -60,26 +67,30 @@ function ContentScroller({ titles }) {
         ))}
         <button
           type="button"
-          className="view-previous material-icons"
+          className={
+            'view-previous material-icons' + (!initial ? ' visible' : '')
+          }
           onClick={viewPrevious}
+          disabled={btnDisabled}
         >
-          arrow_back_ios
+          <ChevronLeft />
         </button>
         <button
           type="button"
           className="view-next material-icons"
           onClick={viewNext}
+          disabled={btnDisabled}
         >
-          arrow_forward_ios
+          <ChevronRight />
         </button>
       </div>
-      <div>{/* <img src={testImage} alt="test image" /> */}</div>
     </>
   )
 
   // Event handlers
   // set new startIndex and new base (key)
   function viewNext() {
+    setBtnDisabled(true)
     let next = startIndex + range, // 6
       base = baseId + range // 5000 + 6
 
@@ -96,6 +107,7 @@ function ContentScroller({ titles }) {
   }
 
   function viewPrevious() {
+    setBtnDisabled(true)
     let next = (startIndex === 0 ? titles.length : startIndex) - range,
       base = baseId - range
     if (next < 0) {

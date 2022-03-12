@@ -9,7 +9,8 @@ let baseImageUrl = null
 let imageSize = null
 
 function App() {
-  const [titles, setTitles] = useState([])
+  const [titles, setTitles] = useState(null)
+
   useEffect(() => {
     getConfig()
     async function getConfig() {
@@ -33,10 +34,11 @@ function App() {
           const titlesList = data.results.map(item => {
             const { original_title, backdrop_path } = item
             const imageUrl = baseImageUrl + imageSize + backdrop_path
+            console.log(imageUrl)
             return { title: original_title, image: imageUrl }
           })
+          console.log(data)
           setTitles(titlesList)
-          console.log(titlesList)
         }
       } catch (error) {
         console.log(error)
@@ -46,7 +48,7 @@ function App() {
 
   return (
     <div className="App">
-      <ContentScroller titles={titles} />
+      {titles ? <ContentScroller titles={titles} /> : <p>Loading</p>}
     </div>
   )
 }
