@@ -4,104 +4,124 @@
   --imageWidth: 96.875%;
   height: 100vh;
   background: rgb(20, 20, 20);
+  background: rgb(70, 70, 70);
   overflow-x: hidden;
   box-sizing: border-box;
 }
 
 .ContentScroller {
   position: relative;
-  top: 100px;
+  top: 140px;
   height: var(--ItemHeight);
-  width: 100%;
+  /* These next rules seem to cure unwated side effect when using scale() */
+  width: 100.444444%;
+  left: calc(-0.444444% / 2);
 }
 
 .ContentScroller .ContentItem {
   position: absolute;
-  left: 0px;
   top: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   overflow: visible;
   width: var(--ItemWidth);
   transition: left 1s;
 }
 
-.ContentScroller .ContentItem img {
-  z-index: 0;
+.ContentScroller .ContentItem .container {
+  position: absolute;
   width: var(--imageWidth);
-  border-radius: 3.5px;
-  transition: width 0.3s;
+  top: 0px;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: top 0.25s, transform 0.25s;
 }
 
-.ContentScroller .ContentItem.active img {
-  width: calc(var(--imageWidth) * 1.5);
+.ContentScroller .ContentItem.active .container {
+  transform: scale(1.5);
+  top: -100%;
+  z-index: 400;
+  transition: top 0.25s, transform 0.25s, z-index 0.25s;
+  transition-delay: 0.5s;
+}
+
+.ContentScroller .ContentItem.on-top .container {
+  z-index: 400;
+}
+
+.ContentScroller .ContentItem:nth-child(1).active .container,
+.ContentScroller .ContentItem:nth-child(8).active .container {
+  transform: translateX(25%) scale(1.5);
+  transition-delay: 0.5s;
+}
+.ContentScroller .ContentItem:nth-child(6).active .container,
+.ContentScroller .ContentItem:nth-child(13).active .container {
+  transform: translateX(-25%) scale(1.5);
+  transition-delay: 0.5s;
+}
+
+.ContentScroller .ContentItem .container img {
+  z-index: 0;
+  /* width: var(--imageWidth); */
+  width: 100%;
+  border-radius: 0.2rem;
+  transition: border-radius 0.25s;
+}
+
+.ContentScroller .ContentItem.active .container img {
+  border-radius: 0.4rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   z-index: 300;
-  transition: width 0.3s, top 0.3s, transform 0.3s, z-index 0.4s;
-  transition-delay: 0.4s;
+  transition: border-radius 0.25s;
+  transition-delay: 0.5s;
 }
 
+.ContentScroller .ContentItem.on-top .container img {
+  z-index: 500;
+}
+
+/* Item Card Appears Animation */
+
 .ContentScroller .ContentItem .card {
+  width: 100%;
   height: 0;
+  background-color: rgb(36, 36, 36);
+  color: white;
   visibility: hidden;
+  overflow-y: hidden;
   opacity: 0;
   z-index: 0;
-  width: var(--imageWidth);
-  transition: width 0.3s, opacity 0.3s, visibility;
+  transition: opacity 0.25s, visibility 0.25s, height 0.25s;
 }
 
 .ContentScroller .ContentItem.active .card {
   height: auto;
-  visibility: visible;
-  opacity: 1;
-  width: calc(var(--imageWidth) * 1.5);
-  z-index: 300;
-  transition: width 0.3s, opacity 0.3s, transform 0.3s, z-index 0.4s;
-  transition-delay: 0.4s;
-}
-.ContentScroller .ContentItem.active .card {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-bottom-left-radius: 3.5px;
-  border-bottom-right-radius: 3.5px;
+  border-bottom-left-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+  visibility: visible;
+  opacity: 1;
+  z-index: 400;
+  transition: opacity 0.1s, transform 0.25s, overflow-y 0.25s;
+  transition-delay: 0.5s;
 }
 
-.ContentScroller .ContentItem.on-top img {
+.ContentScroller .ContentItem.on-top .card {
+  height: auto;
   z-index: 400;
 }
 
-/* .ContentScroller .ContentItem .card {
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  background: pink;
-  visibility: hidden;  */
-/* height: 0;
-  width: var(--imageWidth);
-  opacity: 0;
-}
-
-.ContentScroller .ContentItem.active .card {
-  visibility: visible; */
-/* height: auto;
-  width: calc(var(--imageWidth) * 1.5);
-  opacity: 1;
-  transition: opacity 0.3s, height 0.2s;
-  transition-delay: 0.4s;
-}
-
-/* Item Card */
-.ContentScroller .ContentItem .card {
-  background-color: rgb(36, 36, 36);
-  color: white;
-}
+/* Item Card Engagements */
 
 .ContentScroller .ContentItem .card .engagements {
-  padding: 10px;
+  margin: 5%;
   display: flex;
-  justify-content: space-between;
 }
 
 .ContentScroller .ContentItem .card .engagements button {
@@ -111,13 +131,23 @@
   background-color: transparent;
   color: white;
   position: relative;
-  display: inline-block;
   aspect-ratio: 1 / 1;
   width: 15%;
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
+}
+
+.ContentScroller
+  .ContentItem
+  .card
+  .engagements
+  button:not(.engagements button:last-child) {
+  margin-right: 2%;
+}
+
+.ContentScroller .ContentItem .card .engagements .gap {
+  flex-grow: 1;
 }
 
 .ContentScroller .ContentItem .card .engagements button .circle {
@@ -126,8 +156,13 @@
 
 .ContentScroller .ContentItem .card .engagements button .icon {
   position: absolute;
-  height: 45%;
+  height: auto;
   width: 45%;
+}
+
+.ContentScroller .ContentItem .card .engagements button:nth-child(2) .icon {
+  height: auto;
+  width: 55%;
 }
 .ContentScroller .ContentItem .card .engagements button:first-child .icon {
   fill: black;
@@ -136,25 +171,41 @@
   width: 70%;
 }
 
-.ContentScroller
-  .ContentItem
-  .card
-  .engagements
-  button:first-child:hover
-  .circle {
-  fill: green !important;
+.ContentScroller .ContentItem .card .details {
+  margin: 0 5% 5%;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
 }
 
-.ContentScroller .ContentItem .card .engagements button:hover .circle {
-  fill: green !important;
+.ContentScroller .ContentItem .card .details .gap {
+  flex-grow: 1;
+}
+
+.ContentScroller .ContentItem .card .details p.rating {
+  color: rgb(0, 184, 0);
+  font-weight: 600;
+  margin-right: 4%;
+}
+
+.ContentScroller .ContentItem .card .details svg {
+  width: 10%;
+  height: auto;
+  margin-right: 5%;
+}
+
+/* Tags  */
+.ContentScroller .ContentItem .card .tags {
+  font-size: 10px;
+  font-weight: 400;
+  margin: 0 5% 5%;
 }
 
 /* Left & right buttons for moving the content. */
 .ContentScroller > button {
   position: absolute;
   top: 50%;
-  width: 3.77vw;
-  width: 4vw;
+  width: 3.8vw;
   height: var(--ItemHeight);
   background: #0000006e;
   transform: translate(0, -50%);
@@ -162,6 +213,7 @@
   color: white;
   cursor: pointer;
 }
+
 .ContentScroller > button.view-previous {
   left: 0;
   border-top-right-radius: 3.5px;
@@ -187,7 +239,7 @@
   opacity: 0;
 }
 
-.ContentScroller:hover > button.view-previous.visible,
+.ContentScroller > button.view-previous.visible,
 .ContentScroller:hover > button.view-previous.visible svg,
 .ContentScroller:hover > button.view-next svg {
   visibility: visible;
@@ -196,8 +248,13 @@
 }
 
 .ContentScroller > button svg {
-  width: 40%;
+  width: 38%;
+  height: auto;
+  transition: width 0.35s, height 0.35s;
 }
+
 .ContentScroller > button:hover svg {
-  width: 50%;
+  width: 48%;
+  height: auto;
+  transition: width 0.35s, height 0.35s;
 }

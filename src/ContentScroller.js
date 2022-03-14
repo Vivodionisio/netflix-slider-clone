@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import ContentItem from './ContentItem.js'
-import { ChevronLeft, ChevronRight } from './assets/images/svgs.js'
+import {
+  ChevronLeft,
+  ChevronRight
+} from './assets/images/slider-btns/sliderBtns'
 
 const ItemSpace = 15.3333333333 // was 110 - width of item (100px) + spacing (10px)
 
@@ -58,13 +61,15 @@ function ContentScroller({ titles }) {
   return (
     <>
       <div className={'ContentScroller' + (initial ? ' initial' : '')}>
-        {visible.map(item => (
-          <ContentItem
-            content={item.content}
-            style={{ left: item.position + '%' }}
-            key={item.id}
-          />
-        ))}
+        {visible.map(item => {
+          return (
+            <ContentItem
+              content={item.content}
+              style={{ left: item.position + '%' }}
+              key={item.id}
+            />
+          )
+        })}
         <button
           type="button"
           className={

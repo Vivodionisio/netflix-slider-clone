@@ -5,6 +5,14 @@ import { BsHandThumbsUp } from 'react-icons/bs'
 import { BsHandThumbsDown } from 'react-icons/bs'
 import { IoIosArrowDown } from 'react-icons/io'
 import { CircleOutline, CircleFilled } from './assets/images/svgs'
+import { getReleaseData } from './request/request'
+import { CertU, CertPG } from './assets/images/maturity-badges/Cert'
+
+const {
+  baseUrl,
+  path: { part1, part3 },
+  API_KEY
+} = getReleaseData
 
 const btns = [
   [CircleFilled, IoIosPlay],
@@ -17,7 +25,8 @@ const btns = [
 
 function ContentItem({ content, style }) {
   const [isActive, setIsActive] = useState(false),
-    [isOnTop, setIsOnTop] = useState(false)
+    [isOnTop, setIsOnTop] = useState(false),
+    [certBadge, setCertBadge] = useState('')
 
   const cardButtons = btns.map((btn, i) => {
     if (btn !== null) {
@@ -29,21 +38,50 @@ function ContentItem({ content, style }) {
         </button>
       )
     } else {
-      return <span key={i}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      return (
+        <span className="gap" key={i}>
+          &nbsp;
+        </span>
+      )
     }
   })
 
-  //
   useEffect(() => {
     let timer
     if (isActive === false) {
       setIsOnTop(true)
       timer = setTimeout(() => {
         setIsOnTop(false)
-      }, 400)
+      }, 300)
     }
     return () => clearTimeout(timer)
   }, [isActive])
+
+  useEffect(() => {
+    const titleId = content.titleId
+    const url = `${baseUrl + part1 + titleId}/${part3}?${API_KEY}`
+    getReleaseInfo()
+    async function getReleaseInfo() {
+      try {
+        const response = await fetch(url)
+        if (response.ok === true) {
+          const data = await response.json()
+          const releaseInfoGB = data.results.filter(
+            result => result.iso_3166_1 === 'GB'
+          )
+          const certification = releaseInfoGB[0].release_dates[0].certification
+          const cert = () => {
+            if (certification) <CertU />
+          }
+          setCertBadge(cert)
+        } else {
+          console.log('somerthing went wrong')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [])
 
   return (
     <div
@@ -51,16 +89,30 @@ function ContentItem({ content, style }) {
         'ContentItem' + (isActive ? ' active' : '') + (isOnTop ? ' on-top' : '')
       }
       style={style}
-      onMouseEnter={() => {
-        setIsActive(true)
-      }}
-      onMouseLeave={() => {
-        setIsActive(false)
-      }}
     >
-      <img src={content.image} alt="" />
-      <div className="card">
-        <div className="engagements">{cardButtons}</div>
+      <div
+        className="container"
+        onMouseEnter={() => {
+          setIsActive(true)
+        }}
+        onMouseLeave={() => {
+          setIsActive(false)
+        }}
+      >
+        <img src={content.image} alt="" />
+        <div className="card">
+          <div className="engagements">{cardButtons}</div>
+          <div className="details">
+            <p className="rating">New</p>
+            <CertU />
+            {certBadge}
+            <p className="duration">1hr 15m</p>
+            <span className="gap">&nbsp;</span>
+          </div>
+          <div className="tags">
+            <p>Gritty &#8226; Irreverent &#8226; Animation</p>
+          </div>
+        </div>
       </div>
     </div>
   )
