@@ -26,24 +26,27 @@
   justify-content: center;
   overflow: visible;
   width: var(--ItemWidth);
-  transition: left 1s;
+  transition: left 1s, top 0.25s;
+}
+
+.ContentScroller .ContentItem.active {
+  top: -45%;
+  transition: top 0.25s;
+  transition-delay: 0.5s;
 }
 
 .ContentScroller .ContentItem .container {
-  position: absolute;
   width: var(--imageWidth);
-  top: 0px;
   z-index: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  transition: top 0.25s, transform 0.25s;
+  transition: transform 0.25s;
 }
 
 .ContentScroller .ContentItem.active .container {
   transform: scale(1.5);
-  top: -100%;
   z-index: 400;
   transition: top 0.25s, transform 0.25s, z-index 0.25s;
   transition-delay: 0.5s;
@@ -73,7 +76,7 @@
 }
 
 .ContentScroller .ContentItem.active .container img {
-  border-radius: 0.4rem;
+  border-radius: 0.2rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   z-index: 300;
@@ -103,8 +106,8 @@
   height: auto;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-bottom-left-radius: 0.4rem;
-  border-bottom-right-radius: 0.4rem;
+  border-bottom-left-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
   visibility: visible;
   opacity: 1;
   z-index: 400;
@@ -152,6 +155,11 @@
 
 .ContentScroller .ContentItem .card .engagements button .circle {
   position: absolute;
+}
+
+.ContentScroller .ContentItem .card .engagements button:hover svg circle {
+  position: absolute;
+  stroke: white;
 }
 
 .ContentScroller .ContentItem .card .engagements button .icon {

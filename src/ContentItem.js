@@ -4,9 +4,20 @@ import { IoAddOutline } from 'react-icons/io5'
 import { BsHandThumbsUp } from 'react-icons/bs'
 import { BsHandThumbsDown } from 'react-icons/bs'
 import { IoIosArrowDown } from 'react-icons/io'
-import { CircleOutline, CircleFilled } from './assets/images/svgs'
+import {
+  CircleOutline,
+  CircleFilled
+} from './assets/images/card-btns/card-btns'
 import { getReleaseData } from './request/request'
-import { CertU, CertPG } from './assets/images/maturity-badges/Cert'
+import {
+  CertU,
+  CertPG,
+  Cert12A,
+  Cert12,
+  Cert15,
+  Cert18,
+  CertR18
+} from './assets/images/maturity-badges/cert'
 
 const {
   baseUrl,
@@ -23,10 +34,12 @@ const btns = [
   [CircleOutline, IoIosArrowDown]
 ]
 
-function ContentItem({ content, style }) {
+function ContentItem({ content, style, isDisabled }) {
   const [isActive, setIsActive] = useState(false),
     [isOnTop, setIsOnTop] = useState(false),
     [certBadge, setCertBadge] = useState('')
+
+  const titleId = content.titleId
 
   const cardButtons = btns.map((btn, i) => {
     if (btn !== null) {
@@ -58,7 +71,6 @@ function ContentItem({ content, style }) {
   }, [isActive])
 
   useEffect(() => {
-    const titleId = content.titleId
     const url = `${baseUrl + part1 + titleId}/${part3}?${API_KEY}`
     getReleaseInfo()
     async function getReleaseInfo() {
@@ -71,14 +83,38 @@ function ContentItem({ content, style }) {
           )
           const certification = releaseInfoGB[0].release_dates[0].certification
           const cert = () => {
-            if (certification) <CertU />
+            if (certification === 'U') return <CertU />
+            if (certification === 'PG') return <CertPG />
+            if (certification === '12A') return <Cert12A />
+            if (certification === '12') return <Cert12 />
+            if (certification === '15') return <Cert15 />
+            if (certification === '18') return <Cert18 />
+            if (certification === 'R18') return <CertR18 />
           }
           setCertBadge(cert)
         } else {
-          console.log('somerthing went wrong')
+          console.log('No technical errors, but something when wrong.. ?')
         }
       } catch (error) {
-        console.log(error)
+        console.error(error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const url = `${baseUrl}${part1}${titleId}?${API_KEY}`
+    getInfo()
+    async function getInfo() {
+      try {
+        const response = await fetch(url)
+        if (response.ok === true) {
+          const data = await response.json()
+          console.log(data)
+        } else {
+          console.log('No technical errors, but something when wrong.. ?')
+        }
+      } catch (error) {
+        console.error(error)
       }
     }
   }, [])
@@ -92,9 +128,15 @@ function ContentItem({ content, style }) {
     >
       <div
         className="container"
-        onMouseEnter={() => {
-          setIsActive(true)
-        }}
+        onMouseMove={
+          isDisabled
+            ? () => {
+                setIsActive(false)
+              }
+            : () => {
+                setIsActive(true)
+              }
+        }
         onMouseLeave={() => {
           setIsActive(false)
         }}
@@ -104,7 +146,7 @@ function ContentItem({ content, style }) {
           <div className="engagements">{cardButtons}</div>
           <div className="details">
             <p className="rating">New</p>
-            <CertU />
+            {/* <CertU /> */}
             {certBadge}
             <p className="duration">1hr 15m</p>
             <span className="gap">&nbsp;</span>

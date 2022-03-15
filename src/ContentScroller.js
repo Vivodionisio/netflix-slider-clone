@@ -11,14 +11,14 @@ function ContentScroller({ titles }) {
   const [startIndex, setStart] = useState(0),
     [baseId, setBase] = useState(5000), // key
     [initial, setInitial] = useState(true),
-    [btnDisabled, setBtnDisabled] = useState(false)
+    [isDisabled, setIsDisabled] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setBtnDisabled(false)
+      setIsDisabled(false)
     }, 1000)
     return () => clearTimeout(timer)
-  }, [btnDisabled])
+  }, [isDisabled])
 
   // Build array to render: first six viewable
   // note: here 'next' is the end point
@@ -67,6 +67,7 @@ function ContentScroller({ titles }) {
               content={item.content}
               style={{ left: item.position + '%' }}
               key={item.id}
+              isDisabled={isDisabled}
             />
           )
         })}
@@ -76,7 +77,7 @@ function ContentScroller({ titles }) {
             'view-previous material-icons' + (!initial ? ' visible' : '')
           }
           onClick={viewPrevious}
-          disabled={btnDisabled}
+          disabled={isDisabled}
         >
           <ChevronLeft />
         </button>
@@ -84,7 +85,7 @@ function ContentScroller({ titles }) {
           type="button"
           className="view-next material-icons"
           onClick={viewNext}
-          disabled={btnDisabled}
+          disabled={isDisabled}
         >
           <ChevronRight />
         </button>
@@ -95,15 +96,15 @@ function ContentScroller({ titles }) {
   // Event handlers
   // set new startIndex and new base (key)
   function viewNext() {
-    setBtnDisabled(true)
+    setIsDisabled(true)
     let next = startIndex + range, // 6
       base = baseId + range // 5000 + 6
 
+    // if else n/a for current array
     if (next === titles.length) next = 0
-    // if you only have six titles return to start
+    // If next + range brings us to a value greater than titles.length,
     else if (next + range > titles.length) {
-      // if
-      next = titles.length - range
+      next = titles.length - range // 4
       base = baseId + (next - startIndex) // 6
     }
     setStart(next) // 6
@@ -112,7 +113,7 @@ function ContentScroller({ titles }) {
   }
 
   function viewPrevious() {
-    setBtnDisabled(true)
+    setIsDisabled(true)
     let next = (startIndex === 0 ? titles.length : startIndex) - range,
       base = baseId - range
     if (next < 0) {

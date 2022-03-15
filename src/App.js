@@ -7,7 +7,7 @@ let baseImageUrl = null
 let imageSize = null
 
 function App() {
-  const [titles, setTitles] = useState(null)
+  const [titleIds, setTitleIds] = useState(null)
 
   useEffect(() => {
     getConfig()
@@ -29,12 +29,13 @@ function App() {
         const response = await fetch(request[0].getNewUrl)
         if (response.ok === true) {
           const data = await response.json()
-          const titlesList = data.results.map(item => {
+          console.log(data)
+          const titleId = data.results.map(item => {
             const { original_title, backdrop_path, id } = item
             const imageUrl = baseImageUrl + imageSize + backdrop_path
             return { title: original_title, image: imageUrl, titleId: id }
           })
-          setTitles(titlesList)
+          setTitleIds(titleId)
         }
       } catch (error) {
         console.log(error)
@@ -44,7 +45,7 @@ function App() {
 
   return (
     <div className="App">
-      {titles ? <ContentScroller titles={titles} /> : <p>Loading</p>}
+      {titleIds ? <ContentScroller titles={titleIds} /> : <p>Loading</p>}
     </div>
   )
 }

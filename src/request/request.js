@@ -15,3 +15,5 @@ export const getReleaseData = {
   path: { part1: 'movie/', part2: 'replace with id', part3: 'release_dates' },
   API_KEY
 }
+
+// https://image.tmdb.org/t/p/original/iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg
