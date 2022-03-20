@@ -8,7 +8,7 @@ import {
   CircleOutline,
   CircleFilled
 } from './assets/images/card-btns/card-btns'
-import useItemContent from './useItemContent'
+import { getReleaseData } from './request/request'
 import {
   CertU,
   CertPG,
@@ -18,6 +18,12 @@ import {
   Cert18,
   CertR18
 } from './assets/images/maturity-badges/cert'
+
+const {
+  baseUrl,
+  path: { part1, part3 },
+  API_KEY
+} = getReleaseData
 
 const btns = [
   [CircleFilled, IoIosPlay],
@@ -29,27 +35,11 @@ const btns = [
 ]
 
 function ContentItem({ content, style, isDisabled }) {
-  const titleId = content.titleId
-
   const [isActive, setIsActive] = useState(false),
     [isOnTop, setIsOnTop] = useState(false),
-    [certBadge, setCertBadge] = useState(''),
-    [titleContent] = useItemContent(titleId)
+    [certBadge, setCertBadge] = useState('')
 
-  const {
-    baseImageUrl,
-    backdrop_path,
-    certification,
-    genres,
-    imageSizes,
-    original_title,
-    overview,
-    runtime
-  } = titleContent
-
-  console.log(imageSizes)
-
-  // const imageUrl = `${baseImageUrl}`
+  const titleId = content.titleId
 
   const cardButtons = btns.map((btn, i) => {
     if (btn !== null) {
@@ -80,17 +70,54 @@ function ContentItem({ content, style, isDisabled }) {
     return () => clearTimeout(timer)
   }, [isActive])
 
-  // const certification = null
-  // const cert = () => {
-  //   if (certification === 'U') return <CertU />
-  //   if (certification === 'PG') return <CertPG />
-  //   if (certification === '12A') return <Cert12A />
-  //   if (certification === '12') return <Cert12 />
-  //   if (certification === '15') return <Cert15 />
-  //   if (certification === '18') return <Cert18 />
-  //   if (certification === 'R18') return <CertR18 />
-  // }
-  // setCertBadge(cert)
+  useEffect(() => {
+    const url = `${baseUrl + part1 + titleId}/${part3}?${API_KEY}`
+    getReleaseInfo()
+    async function getReleaseInfo() {
+      try {
+        const response = await fetch(url)
+        if (response.ok === true) {
+          const data = await response.json()
+          const releaseInfoGB = data.results.filter(
+            result => result.iso_3166_1 === 'GB'
+          )
+          const certification = releaseInfoGB[0].release_dates[0].certification
+          const cert = () => {
+            if (certification === 'U') return <CertU />
+            if (certification === 'PG') return <CertPG />
+            if (certification === '12A') return <Cert12A />
+            if (certification === '12') return <Cert12 />
+            if (certification === '15') return <Cert15 />
+            if (certification === '18') return <Cert18 />
+            if (certification === 'R18') return <CertR18 />
+          }
+          setCertBadge(cert)
+        } else {
+          console.log('No technical errors, but something when wrong.. ?')
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const url = `${baseUrl}${part1}${titleId}?${API_KEY}`
+    getInfo()
+    async function getInfo() {
+      try {
+        const response = await fetch(url)
+        if (response.ok === true) {
+          const data = await response.json()
+          console.log(data)
+        } else {
+          console.log('No technical errors, but something when wrong.. ?')
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }, [])
 
   return (
     <div
@@ -114,12 +141,13 @@ function ContentItem({ content, style, isDisabled }) {
           setIsActive(false)
         }}
       >
-        <img src={content.image} alt="title" />
+        <img src={content.image} alt="" />
         <div className="card">
           <div className="engagements">{cardButtons}</div>
           <div className="details">
             <p className="rating">New</p>
-            {/* {certBadge} */}
+            {/* <CertU /> */}
+            {certBadge}
             <p className="duration">1hr 15m</p>
             <span className="gap">&nbsp;</span>
           </div>

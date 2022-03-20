@@ -1,0 +1,7 @@
+The entire catalogue
+
+Only use context if neither prop or composition are better options
+The router always has one current location
+Plan the route structure carefully before I begin
+
+The important thing is that you need a state variable for each reference to a cache item, so you can update and re-render when the API has returned the corresponding data.
