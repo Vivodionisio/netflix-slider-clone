@@ -5,13 +5,28 @@ const {
   path: { movies, releaseDates }
 } = getReleaseData
 
-const cache = new Map([[]])
+const cache = new Map()
 
-let baseImageUrl, imageSizes, certification
+const defaultTitle = {
+  baseImageUrl: '',
+  backdrop_path: '',
+  certification: '',
+  genres: [
+    { id: 1, name: '' },
+    { id: 2, name: '' },
+    { id: 3, name: '' }
+  ],
+  imageSizes: ['', '', '', ''],
+  original_title: '',
+  overview: '',
+  runtime: 1
+}
+let baseImageUrl, imageSizes
+
 export default function useItemContent(titleId) {
-  const [title, setTitle] = useState(() => {
-    return cache.get(titleId) || ''
-  })
+  const [title, setTitle] = useState(cache.get(titleId) || defaultTitle)
+
+  let certification
 
   useEffect(() => {
     if (cache.has(titleId)) return
@@ -65,6 +80,7 @@ export default function useItemContent(titleId) {
           const data = await response.json()
           const { backdrop_path, genres, original_title, overview, runtime } =
             data
+
           const titleInfo = {
             baseImageUrl,
             backdrop_path,
@@ -85,9 +101,9 @@ export default function useItemContent(titleId) {
         console.error(error)
       }
     }
-  }, [])
+  }, [titleId])
 
-  return [title]
+  return title
 }
 
 // what do I need?

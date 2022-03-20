@@ -32,9 +32,8 @@ function ContentItem({ content, style, isDisabled }) {
   const titleId = content.titleId
 
   const [isActive, setIsActive] = useState(false),
-    [isOnTop, setIsOnTop] = useState(false),
     [certBadge, setCertBadge] = useState(''),
-    [titleContent] = useItemContent(titleId)
+    titleContent = useItemContent(titleId)
 
   const {
     baseImageUrl,
@@ -47,7 +46,8 @@ function ContentItem({ content, style, isDisabled }) {
     runtime
   } = titleContent
 
-  console.log(imageSizes)
+  console.log(titleContent)
+  const image = baseImageUrl + imageSizes[3] + backdrop_path
 
   // const imageUrl = `${baseImageUrl}`
 
@@ -69,17 +69,6 @@ function ContentItem({ content, style, isDisabled }) {
     }
   })
 
-  useEffect(() => {
-    let timer
-    if (isActive === false) {
-      setIsOnTop(true)
-      timer = setTimeout(() => {
-        setIsOnTop(false)
-      }, 300)
-    }
-    return () => clearTimeout(timer)
-  }, [isActive])
-
   // const certification = null
   // const cert = () => {
   //   if (certification === 'U') return <CertU />
@@ -93,12 +82,7 @@ function ContentItem({ content, style, isDisabled }) {
   // setCertBadge(cert)
 
   return (
-    <div
-      className={
-        'ContentItem' + (isActive ? ' active' : '') + (isOnTop ? ' on-top' : '')
-      }
-      style={style}
-    >
+    <div className={'ContentItem' + (isActive ? ' active' : '')} style={style}>
       <div
         className="container"
         onMouseMove={
@@ -114,7 +98,7 @@ function ContentItem({ content, style, isDisabled }) {
           setIsActive(false)
         }}
       >
-        <img src={content.image} alt="title" />
+        <img src={image} alt="title" />
         <div className="card">
           <div className="engagements">{cardButtons}</div>
           <div className="details">
