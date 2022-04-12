@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import ContentItem from './ContentItem.js'
 import {
   ChevronLeft,
@@ -7,9 +7,9 @@ import {
 
 const ItemSpace = 15.3333333333 // was 110 - width of item (100px) + spacing (10px)
 
-function ContentScroller({ titles }) {
+function ContentScroller({ titles, imageConfig }) {
   const [startIndex, setStart] = useState(0),
-    [baseId, setBase] = useState(5000), // key
+    [baseId, setBase] = useState(5000), // key prop
     [initial, setInitial] = useState(true),
     [isDisabled, setIsDisabled] = useState(false)
 
@@ -68,14 +68,13 @@ function ContentScroller({ titles }) {
               style={{ left: item.position + '%' }}
               key={item.id}
               isDisabled={isDisabled}
+              imageConfig={imageConfig}
             />
           )
         })}
         <button
           type="button"
-          className={
-            'view-previous material-icons' + (!initial ? ' visible' : '')
-          }
+          className={'view-previous' + (!initial ? ' visible' : '')}
           onClick={viewPrevious}
           disabled={isDisabled}
         >
@@ -83,7 +82,7 @@ function ContentScroller({ titles }) {
         </button>
         <button
           type="button"
-          className="view-next material-icons"
+          className="view-next"
           onClick={viewNext}
           disabled={isDisabled}
         >
@@ -95,8 +94,10 @@ function ContentScroller({ titles }) {
 
   // Event handlers
   // set new startIndex and new base (key)
+
   function viewNext() {
     setIsDisabled(true)
+
     let next = startIndex + range, // 6
       base = baseId + range // 5000 + 6
 

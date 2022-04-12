@@ -1,3 +1,4 @@
+https://api.themoviedb.org/3/movie/157336?api_key=f2edd756926fc9d78862d49600845a8d&append_to_response=release_dates,videos
 {
   "myApiKey": "f2edd756926fc9d78862d49600845a8d",
   "images": {

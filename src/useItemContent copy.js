@@ -1,62 +1,55 @@
 import { useState, useEffect } from 'react'
-import { getReleaseData } from './request/request'
+import { baseUrl, API_KEY } from './request/request'
 
-const {
-  baseUrl,
-  path: { movies, releaseDates },
-  API_KEY
-} = getReleaseData
+const cache = new Map()
 
-const cache = new Map([[]])
-
-function getCachedItem(titleId) {
-  const item = cache.get(titleId)
-  console.log(item)
+const defaultItem = {
+  backdrop_path: '',
+  certification: '',
+  genres: [
+    { id: 1, name: '' },
+    { id: 2, name: '' },
+    { id: 3, name: '' }
+  ],
+  original_title: '',
+  overview: '',
+  release_dates: {
+    results: [
+      {
+        iso_3166_1: '',
+        release_dates: [
+          {
+            certification: '',
+            iso_639_1: '',
+            note: '',
+            release_date: '',
+            type: 1
+          }
+        ]
+      }
+    ]
+  },
+  runtime: 1
 }
 
-export default function useItemContent(titleId) {
-  const [titleData, setTitleData] = useState(() => {
-    return getCachedItem(titleId)
-  })
+export default function useItemContent(itemId) {
+  const [title, setTitle] = useState(cache.get(itemId) || defaultItem)
 
   useEffect(() => {
-    const url = `${baseUrl}${movies}${titleId}?${API_KEY}`
+    if (cache.has(itemId)) return
     getInfo()
     async function getInfo() {
+      const getInfoUrl = `${baseUrl}movie/${itemId}?${API_KEY}&append_to_response=release_dates`
       try {
-        const response = await fetch(url)
-        if (response.ok === true) {
-          const data = await response.json()
-          // console.log(data)
-          cache.set(titleId, data)
-          // setTitle(data)
-        } else {
-          console.log('No technical errors, but something when wrong.. ?')
-        }
+        const response = await fetch(getInfoUrl)
+        const data = await response.json()
+        cache.set(itemId, data)
+        setTitle(data)
       } catch (error) {
-        console.error(error)
+        console.error(`Get info ${error}`)
       }
     }
-  }, [titleData])
+  }, [itemId])
 
-  return [titleData, setTitleData]
+  return title
 }
-
-// what do it need?
-
-// small image for slider
-// large image for 'get more info'
-
-// genres
-// maturity rating (and desc)
-
-// duration
-// format
-
-// descriptive tags
-// cast
-// name
-// description
-
-// writer
-// director
