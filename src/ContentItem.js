@@ -23,7 +23,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     [isOpen, setIsOpen] = useState(false),
     itemContent = useItemContent(itemId)
 
-  const inMeRef = useRef() // 'remember' weather mouse is within a content item
+  const inMeRef = useRef() // 'remember' whether mouse is within a content item
   const thumbRef = useRef()
   const containerRef = useRef()
   const modalRef = useRef()
@@ -43,15 +43,17 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
   useEffect(() => {
     if (!modalRef.current || !rectRef.current || !isOpen) return
-    rectRef.current = containerRef.current.getBoundingClientRect()
     const ele = modalRef.current.querySelector('.inner-wrapper')
     const w = window.innerWidth
     w > 840 ? (ele.style.left = `${(w - 840) / 2}px`) : (ele.style.left = '0px')
-    ele.style.maxWidth = '840px'
+    // ele.style.maxWidth = '840px'
     ele.style.position = 'fixed'
-    ele.style.top = '30px'
-    ele.style.tranformOrigin = 'center top'
-    ele.style.transform = 'scale(1, 1)'
+    ele.style.top = '150px'
+    ele.style.left = '50%'
+    ele.style.margin = 'auto'
+    ele.style.transformOrigin = 'left'
+    ele.style.transform = 'scale(2, 2) translate(-50%)'
+    ele.style.transition = 'All 1s'
   }, [isOpen])
 
   if (isOpen) {
@@ -114,18 +116,18 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     ele.style.left = `${rectRef.current.left}px`
     ele.style.top = `${rectRef.current.top}px`
     ele.style.maxWidth = `${rectRef.current.width}px`
-    ele.style.transitionDuration = '.5s'
+    ele.style.transition = 'all 0.5s ease'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 1
 
     const engagementsEle = modalRef.current.querySelector('.engagements')
     engagementsEle.style.opacity = 1
-    engagementsEle.style.transition = 'opacity'
-    engagementsEle.style.transitionDuration = '1s'
+    engagementsEle.style.transition = 'opacity .5s ease'
 
     const card = modalRef.current.querySelector('.card')
     card.style.opacity = 1
+    card.style.transition = 'opacity .5s ease'
 
     setIsOpen(true)
   }
@@ -136,23 +138,24 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     modalRef.current.style.transition = 'background-color .2s'
 
     const wrapper = modalRef.current.querySelector('.inner-wrapper')
+    wrapper.style.transform = 'scale(1, 1) translate(0)'
     wrapper.style.position = 'fixed'
     wrapper.style.left = `${rect.left}px`
-    wrapper.style.top = `${rect.top}px`
     wrapper.style.maxWidth = `${rect.width}px`
-    wrapper.style.transitionDuration = '.5s'
+    wrapper.style.top = `${rect.top}px`
+    wrapper.style.transition = 'all .5s ease'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 0
-    closeBtn.style.transitionDuration = '.1s'
+    closeBtn.style.transitionDuration = '.5s'
 
     const engagementsEle = modalRef.current.querySelector('.engagements')
     engagementsEle.style.opacity = 0
-    engagementsEle.style.transitionDuration = '.1s'
+    engagementsEle.style.transitionDuration = '.5s'
 
     const card = modalRef.current.querySelector('.card')
     card.style.opacity = 0
-    card.style.transitionDuration = '.1s'
+    card.style.transition = 'opacity 0.5s ease'
 
     setTimeout(() => setIsOpen(false), 500)
   }
