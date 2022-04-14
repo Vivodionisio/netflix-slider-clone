@@ -44,29 +44,14 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   useEffect(() => {
     if (!modalRef.current || !rectRef.current || !isOpen) return
     const ele = modalRef.current.querySelector('.inner-wrapper')
-    const w = window.innerWidth
-    w > 840 ? (ele.style.left = `${(w - 840) / 2}px`) : (ele.style.left = '0px')
-    // ele.style.maxWidth = '840px'
     ele.style.position = 'fixed'
     ele.style.top = '150px'
     ele.style.left = '50%'
+    ele.style.transform = 'scale(2, 2) translate(-50%)'
     ele.style.margin = 'auto'
     ele.style.transformOrigin = 'left'
-    ele.style.transform = 'scale(2, 2) translate(-50%)'
-    ele.style.transition = 'All 1s'
+    ele.style.transition = 'All .4s .2s'
   }, [isOpen])
-
-  if (isOpen) {
-    window.addEventListener('resize', () => {
-      const ele = modalRef.current.querySelector('.inner-wrapper')
-      if (window.innerWidth > 840) {
-        ele.style.left = `${(window.innerWidth - 840) / 2}px`
-      } else {
-        ele.style.left = '0px'
-      }
-      ele.style.transitionDuration = '0s'
-    })
-  }
 
   const {
     backdrop_path,
@@ -116,18 +101,18 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     ele.style.left = `${rectRef.current.left}px`
     ele.style.top = `${rectRef.current.top}px`
     ele.style.maxWidth = `${rectRef.current.width}px`
-    ele.style.transition = 'all 0.5s ease'
+    ele.style.transformOrigin = 'unset'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 1
 
     const engagementsEle = modalRef.current.querySelector('.engagements')
     engagementsEle.style.opacity = 1
-    engagementsEle.style.transition = 'opacity .5s ease'
+    engagementsEle.style.transition = 'opacity .5s'
 
     const card = modalRef.current.querySelector('.card')
     card.style.opacity = 1
-    card.style.transition = 'opacity .5s ease'
+    card.style.transition = 'opacity .5s'
 
     setIsOpen(true)
   }
@@ -137,25 +122,26 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     modalRef.current.style.backgroundColor = 'rgb(0 0 0 / 0%)'
     modalRef.current.style.transition = 'background-color .2s'
 
-    const wrapper = modalRef.current.querySelector('.inner-wrapper')
-    wrapper.style.transform = 'scale(1, 1) translate(0)'
-    wrapper.style.position = 'fixed'
-    wrapper.style.left = `${rect.left}px`
-    wrapper.style.maxWidth = `${rect.width}px`
-    wrapper.style.top = `${rect.top}px`
-    wrapper.style.transition = 'all .5s ease'
+    const ele = modalRef.current.querySelector('.inner-wrapper')
+    ele.style.position = 'absolute'
+    ele.style.top = `${rect.top}px`
+    ele.style.left = `${rect.left}px`
+    ele.style.maxWidth = `${rect.width}px`
+    ele.style.transform = 'scale(1, 1)'
+    ele.style.transformOrigin = 'revert'
+    ele.style.transition = 'all .4s'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 0
-    closeBtn.style.transitionDuration = '.5s'
+    closeBtn.style.transitionDuration = '.4s'
 
     const engagementsEle = modalRef.current.querySelector('.engagements')
     engagementsEle.style.opacity = 0
-    engagementsEle.style.transitionDuration = '.5s'
+    engagementsEle.style.transitionDuration = '.4s'
 
     const card = modalRef.current.querySelector('.card')
     card.style.opacity = 0
-    card.style.transition = 'opacity 0.5s ease'
+    card.style.transition = 'opacity 0.4s'
 
     setTimeout(() => setIsOpen(false), 500)
   }

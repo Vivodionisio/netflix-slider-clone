@@ -40,26 +40,13 @@
   font-size: 50%;
   left: initial;
   top: initial;
-  /* max-width: 840px; */
   overflow: auto;
   height: max-content;
   position: absolute;
   visibility: visible;
-  transition: max-width 0.5s 0.15s, left 0.5s 0.15s, top 0.5s 0.15s,
-    font-size 0.5s 0.15;
+  /* transition: max-width 0.5s linear 0.15s, left 0.5s linear 0.15s,
+    top 0.5s linear 0.15s, font-size 0.5s linear 0.15; */
 }
-
-/* .ContentScroller .ContentItem:nth-child(1).open .modal .inner-wrapper,
-.ContentScroller .ContentItem:nth-child(8).open .modal .inner-wrapper {
-  transform-origin: left;
-}
-
-.ContentScroller .ContentItem:nth-child(6).open .modal .inner-wrapper,
-.ContentScroller .ContentItem:nth-child(13).open .modal .inner-wrapper {
-  transform-origin: right;
-} */
-
-/*  */
 
 .ContentScroller .ContentItem.open .modal img {
   width: 100%;
