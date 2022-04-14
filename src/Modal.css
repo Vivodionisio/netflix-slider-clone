@@ -42,7 +42,7 @@
 }
 
 .ContentScroller .ContentItem.open .modal .inner-wrapper {
-  font-size: 50%;
+  font-size: 41%;
 }
 
 .ContentScroller .ContentItem.open .modal img {
@@ -59,17 +59,36 @@
   border-bottom-right-radius: 0;
   transition: border-radius 0.25s;
   transition-delay: 0s;
+  position: relative;
+}
+
+.ContentScroller .ContentItem.open .modal .header {
+  position: relative;
+}
+.ContentScroller .ContentItem.open .modal .header .gradient {
+  position: absolute;
+  bottom: -1px;
+  height: 90px;
+  width: 100%;
+  background: rgb(24, 24, 24);
+  background: linear-gradient(
+    0deg,
+    rgba(24, 24, 24, 1) 1%,
+    rgba(24, 24, 24, 0.8646052170868348) 21%,
+    rgba(24, 24, 24, 0) 100%
+  );
+  z-index: 0;
 }
 
 .ContentScroller .ContentItem.open .modal .closeBtn {
-  font-size: 16px;
+  font-size: 14px;
   color: #e9e9e9;
-  background: #232323;
+  background: #101010;
   border-radius: 50%;
-  padding: 3px;
+  padding: 0.05em;
   position: absolute;
-  top: 7px;
-  right: 6px;
+  top: 4px;
+  right: 4px;
   cursor: pointer;
   opacity: 0;
 }
@@ -86,11 +105,12 @@
 }
 
 .ContentScroller .ContentItem .modal .header .engagements {
-  margin: 5%;
+  margin: 0 5%;
   display: flex;
   position: absolute;
-  top: 54%;
+  top: 78%;
   opacity: 0;
+  z-index: 2;
 }
 
 .ContentScroller .ContentItem .modal .header .engagements button {
@@ -101,7 +121,7 @@
   color: white;
   position: relative;
   aspect-ratio: 1 / 1;
-  width: 8%;
+  width: 6%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,13 +140,54 @@
   flex-grow: 1;
 }
 
+.ContentScroller .ContentItem .modal .engagements button:first-child {
+  background: rgb(255, 255, 255);
+  width: 3.45em;
+  height: 1.2em;
+  border-radius: 0.1em;
+  align-self: center;
+}
+
+.ContentScroller
+  .ContentItem
+  .modal
+  .header
+  .engagements
+  button:first-child
+  span {
+  font-size: 6.5px;
+  font-weight: 600;
+  color: black;
+}
+
+.ContentScroller
+  .ContentItem
+  .modal
+  .header
+  .engagements
+  button:first-child:hover {
+  background-color: rgba(246, 246, 246, 0.904);
+}
+
 .ContentScroller .ContentItem .modal .header .engagements button .circle {
   position: absolute;
 }
 
 .ContentScroller .ContentItem .modal .header .engagements button svg circle {
-  stroke: rgb(217, 217, 217);
-  fill: rgb(59 59 59 / 44%);
+  stroke: rgba(255, 255, 255, 0.5);
+  fill: rgba(0, 0, 0, 0.303);
+}
+
+.ContentScroller
+  .ContentItem
+  .modal
+  .header
+  .engagements
+  button:hover
+  svg
+  circle {
+  stroke: rgb(255, 255, 255);
+  fill: rgba(43, 43, 43, 0.515);
 }
 
 .ContentScroller
@@ -164,10 +225,27 @@
   fill: #b9b9b9;
 }
 
-.ContentScroller .ContentItem .modal .header .engagements button .icon {
+.ContentScroller
+  .ContentItem
+  .modal
+  .header
+  .engagements
+  button:not(button:first-child)
+  .icon {
   position: absolute;
   height: auto;
   width: 45%;
+}
+
+.ContentScroller
+  .ContentItem
+  .modal
+  .header
+  .engagements
+  button:nth-child(2)
+  .icon {
+  height: auto;
+  width: 13px;
 }
 
 .ContentScroller
@@ -188,9 +266,9 @@
   button:first-child
   .icon {
   fill: black;
-  left: 17.5%;
-  height: 70%;
-  width: 70%;
+  width: 15px;
+  height: auto;
+  margin-left: -4px;
 }
 
 .ContentScroller .ContentItem .modal .card .details {
@@ -206,13 +284,13 @@
 .ContentScroller .ContentItem .modal .card .details p.rating {
   color: rgb(0, 184, 0);
   font-weight: 700;
-  margin-right: 1%;
+  margin-right: 1.8%;
 }
 
 .ContentScroller .ContentItem .modal .card .details svg {
-  width: 4%;
+  width: 3.3%;
   height: auto;
-  margin-right: 1%;
+  margin-right: 1.4%;
 }
 
 /* Tags  */

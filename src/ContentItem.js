@@ -50,11 +50,15 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
     const ele = modalRef.current.querySelector('.inner-wrapper')
     ele.style.position = 'fixed'
-    ele.style.top = '150px'
+    ele.style.top = '212px'
     ele.style.left = '50%'
-    ele.style.transform = 'scale(2, 2) translateX(-50%)'
+    ele.style.transform = 'scale(2.6, 2.6) translateX(-50%)'
     ele.style.transformOrigin = 'left'
     ele.style.transition = 'All .4s .1s'
+
+    const gradEle = modalRef.current.querySelector('.gradient')
+    gradEle.style.opacity = 1
+    gradEle.style.transition = 'opacity .4s .1s'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 1
@@ -122,6 +126,9 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 0
 
+    const gradEle = modalRef.current.querySelector('.gradient')
+    gradEle.style.opacity = 0
+
     const engagementsEle = modalRef.current.querySelector('.engagements')
     engagementsEle.style.opacity = 0
 
@@ -159,11 +166,15 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     }
 
     ele.style.transition =
-      'top .4s, max-width .4s, transform .4s, transform-origin .4s, left .4s'
+      'top .3s, max-width .3s, transform .3s, transform-origin .3s, left .3s'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 0
     closeBtn.style.transition = 'opacity .15s'
+
+    const gradEle = modalRef.current.querySelector('.gradient')
+    gradEle.style.opacity = 0
+    gradEle.style.transition = 'opacity .15s'
 
     const engagementsEle = modalRef.current.querySelector('.engagements')
     engagementsEle.style.opacity = 0
@@ -257,10 +268,11 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
                 handleCloseModal()
               }}
             />
+            <div className="gradient"></div>
             <div className="engagements">
               <button>
-                <CircleFilled className="circle" />
                 <IoIosPlay className="icon" />
+                <span>Play</span>
               </button>
               <button>
                 <CircleOutline className="circle" />
