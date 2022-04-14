@@ -14,10 +14,6 @@
 
 /* Modal */
 
-.ContentScroller .ContentItem .modal .inner-wrapper {
-  /* transform: translate(0%); */
-}
-
 .ContentScroller .ContentItem.open .modal {
   top: 0;
   width: var(--imageWidth);
@@ -38,14 +34,6 @@
 
 .ContentScroller .ContentItem.open .modal .inner-wrapper {
   font-size: 50%;
-  left: initial;
-  top: initial;
-  overflow: auto;
-  height: max-content;
-  position: absolute;
-  visibility: visible;
-  /* transition: max-width 0.5s linear 0.15s, left 0.5s linear 0.15s,
-    top 0.5s linear 0.15s, font-size 0.5s linear 0.15; */
 }
 
 .ContentScroller .ContentItem.open .modal img {
@@ -88,13 +76,6 @@
   overflow-y: hidden;
 }
 
-/* .ContentScroller .ContentItem .modal .card button {
-  opacity: 0;
-}
-.ContentScroller .ContentItem.open .modal .card button {
-  width: 8%;
-} */
-
 .ContentScroller .ContentItem .modal .header .engagements {
   margin: 5%;
   display: flex;
@@ -115,11 +96,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.ContentScroller .ContentItem.open .modal .header .engagements button {
-  /* opacity: 1; */
-  /* transition: opacity 0.5s 0.15s; */
 }
 
 .ContentScroller
