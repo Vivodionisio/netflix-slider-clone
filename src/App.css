@@ -256,7 +256,7 @@
   border-bottom-left-radius: 3.5px;
 }
 
-.ContentScroller:hover > button {
+.ContentScroller > button:hover {
   background: #0000009f;
 }
 

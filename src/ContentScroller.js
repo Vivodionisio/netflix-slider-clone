@@ -38,7 +38,7 @@ function ContentScroller({ titles, imageConfig }) {
     next++
   }
 
-  // after initial - add prevoous 7 items
+  // after initial - add previous 7 items
   if (!initial) {
     next = first - 1
     // incremenent by 7

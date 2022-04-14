@@ -43,23 +43,26 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
   useEffect(() => {
     if (!modalRef.current || !rectRef.current || !isOpen) return
+
+    const modalBg = modalRef.current.querySelector('.modal-bg')
+    modalBg.style.backgroundColor = 'rgb(0 0 0 / 63%)'
+    modalBg.style.transition = 'background-color .4s .1s'
+
     const ele = modalRef.current.querySelector('.inner-wrapper')
     ele.style.position = 'fixed'
     ele.style.top = '150px'
     ele.style.left = '50%'
     ele.style.transform = 'scale(2, 2) translateX(-50%)'
     ele.style.transformOrigin = 'left'
-    // ele.style.transition = 'All .4s .2s'
-    ele.style.transition =
-      'top .4s .2s, left .4s .2s, transform .4s .2s, transform-origin .4s .2s'
+    ele.style.transition = 'All .4s .1s'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 1
-    closeBtn.style.transition = 'opacity .5s .2s'
+    closeBtn.style.transition = 'opacity .5s .1s'
 
     const engagementsEle = modalRef.current.querySelector('.engagements')
     engagementsEle.style.opacity = 1
-    engagementsEle.style.transition = 'opacity .5s .2s'
+    engagementsEle.style.transition = 'opacity .5s .1s'
   }, [isOpen])
 
   const {
@@ -103,8 +106,11 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     rectRef.current = containerRef.current.getBoundingClientRect()
 
     modalRef.current.style.display = 'flex'
-    modalRef.current.style.backgroundColor = 'rgb(0 0 0 / 63%)'
-    modalRef.current.style.transition = 'background-color .5s'
+
+    const modalBg = modalRef.current.querySelector('.modal-bg')
+    modalBg.style.display = 'block'
+    modalBg.style.backgroundColor = 'rgb(0 0 0 / 0%)'
+    modalBg.style.transition = 'background-color .5s'
 
     const ele = modalRef.current.querySelector('.inner-wrapper')
     ele.style.position = 'fixed'
@@ -127,10 +133,14 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
   function handleCloseModal() {
     const rect = thumbRef.current.getBoundingClientRect()
-    modalRef.current.style.backgroundColor = 'rgb(0 0 0 / 0%)'
-    modalRef.current.style.transition = 'background-color .4s'
+
+    const modalBg = modalRef.current.querySelector('.modal-bg')
+    modalBg.style.backgroundColor = 'rgb(0 0 0 / 0%)'
+    modalBg.style.transition = 'background-color .4s'
+
     setTimeout(() => {
       modalRef.current.style.display = 'none'
+      modalBg.style.display = 'none'
     }, 400)
 
     const ele = modalRef.current.querySelector('.inner-wrapper')
@@ -139,7 +149,15 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     ele.style.left = `${rect.left}px`
     ele.style.maxWidth = `${rect.width}px`
     ele.style.transform = 'scale(1, 1)'
-    ele.style.transformOrigin = 'revert'
+    if (
+      rect.left < window.innerWidth / 2 &&
+      rect.right < window.innerWidth / 2
+    ) {
+      ele.style.transformOrigin = 'right'
+    } else {
+      ele.style.transformOrigin = 'revert'
+    }
+
     ele.style.transition =
       'top .4s, max-width .4s, transform .4s, transform-origin .4s, left .4s'
 
@@ -229,6 +247,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       </div>
 
       <div ref={modalRef} className={!isOpen ? 'hide' : 'modal'}>
+        <div className="modal-bg"></div>
         <div className="inner-wrapper">
           <div className="header">
             <img src={imageLg} alt="title" />
