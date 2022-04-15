@@ -54,8 +54,8 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     ele.style.width = '340px'
     ele.style.top = '30px'
     ele.style.left = '50%'
-    ele.style.transform = 'scale(2.6, 2.6) translateX(-50%)'
-    ele.style.transformOrigin = 'left top'
+    ele.style.transform = 'translateX(-50%) scale(2.6, 2.6)'
+    ele.style.transformOrigin = 'top center'
     ele.style.transition = 'All .4s .1s'
 
     const gradEle = modalRef.current.querySelector('.gradient')
@@ -123,7 +123,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     ele.style.left = `${rectRef.current.left}px`
     ele.style.top = `${rectRef.current.top}px`
     ele.style.maxWidth = `${rectRef.current.width}px`
-    ele.style.transformOrigin = 'left top'
+    ele.style.transformOrigin = 'top center'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 0
@@ -158,17 +158,9 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     ele.style.left = `${rect.left}px`
     ele.style.maxWidth = `${rect.width}px`
     ele.style.transform = 'scale(1, 1)'
-    if (
-      rect.left < window.innerWidth / 2 &&
-      rect.right < window.innerWidth / 2
-    ) {
-      ele.style.transformOrigin = 'right top'
-    } else {
-      ele.style.transformOrigin = 'left top'
-    }
+    ele.style.transformOrigin = 'top center'
 
-    ele.style.transition =
-      'top .3s, max-width .3s, transform .3s, transform-origin .3s, left .3s'
+    ele.style.transition = 'top .3s, left .3s, transform .3s,'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 0
