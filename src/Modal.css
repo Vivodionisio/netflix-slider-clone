@@ -226,7 +226,6 @@
 }
 
 .ContentScroller
-  .ContentItem
   .modal
   .header
   .engagements
@@ -245,19 +244,9 @@
   button:nth-child(2)
   .icon {
   height: auto;
-  width: 13px;
+  width: 57%;
 }
 
-.ContentScroller
-  .ContentItem
-  .modal
-  .header
-  .engagements
-  button:nth-child(2)
-  .icon {
-  height: auto;
-  width: 55%;
-}
 .ContentScroller
   .ContentItem
   .modal
@@ -288,7 +277,7 @@
 }
 
 .ContentScroller .ContentItem .modal .card .details svg {
-  width: 3.3%;
+  width: 3.4%;
   height: auto;
   margin-right: 1.4%;
 }

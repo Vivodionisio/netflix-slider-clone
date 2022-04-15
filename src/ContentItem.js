@@ -50,10 +50,12 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
     const ele = modalRef.current.querySelector('.inner-wrapper')
     ele.style.position = 'fixed'
-    ele.style.top = '212px'
+    ele.style.maxWidth = '37.14%'
+    ele.style.width = '340px'
+    ele.style.top = '30px'
     ele.style.left = '50%'
     ele.style.transform = 'scale(2.6, 2.6) translateX(-50%)'
-    ele.style.transformOrigin = 'left'
+    ele.style.transformOrigin = 'left top'
     ele.style.transition = 'All .4s .1s'
 
     const gradEle = modalRef.current.querySelector('.gradient')
@@ -121,7 +123,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     ele.style.left = `${rectRef.current.left}px`
     ele.style.top = `${rectRef.current.top}px`
     ele.style.maxWidth = `${rectRef.current.width}px`
-    ele.style.transformOrigin = 'unset'
+    ele.style.transformOrigin = 'left top'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
     closeBtn.style.opacity = 0
@@ -160,9 +162,9 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       rect.left < window.innerWidth / 2 &&
       rect.right < window.innerWidth / 2
     ) {
-      ele.style.transformOrigin = 'right'
+      ele.style.transformOrigin = 'right top'
     } else {
-      ele.style.transformOrigin = 'revert'
+      ele.style.transformOrigin = 'left top'
     }
 
     ele.style.transition =
