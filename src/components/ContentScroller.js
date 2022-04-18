@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import ContentItem from './ContentItem.js'
+import ContentItem from './content-item/ContentItem.jsx'
 import { ChevronLeft, ChevronRight } from './sliderBtns'
 
 const ItemSpace = 15.3333333333 // was 110 - width of item (100px) + spacing (10px)

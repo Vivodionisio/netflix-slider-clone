@@ -1,16 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { certBadgeElement } from '../helpers/certBadgeElement'
-import { genreElements } from '../helpers/genreElements'
-import { CircleFilled, CircleOutline } from './circles.js'
-import { IoIosPlay } from 'react-icons/io'
-import { IoAddOutline } from 'react-icons/io5'
-import { BsHandThumbsUp } from 'react-icons/bs'
-import { BsHandThumbsDown } from 'react-icons/bs'
-import { IoIosArrowDown } from 'react-icons/io'
-import { IoCloseOutline } from 'react-icons/io5'
-import './Modal.css'
+import { certBadgeElement } from '../../helpers/certBadgeElement'
+import { genreElements } from '../../helpers/genreElements'
+import Engagements from './Engagements'
+import { Modal } from './Modal'
+import './modal.css'
 
-import useItemContent from '../hooks/useItemContent'
+import useItemContent from '../../hooks/useItemContent'
 
 function ContentItem({ content, style, isDisabled, imageConfig }) {
   const itemId = content.titleId
@@ -19,10 +14,10 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     [isOpen, setIsOpen] = useState(false),
     itemContent = useItemContent(itemId)
 
-  const inMeRef = useRef() // 'remember' whether mouse is within a content item
-  const thumbRef = useRef()
-  const containerRef = useRef()
-  const modalRef = useRef()
+  const inMeRef = useRef() // to store (remember) if mouse is inside a content item
+  const thumbRef = useRef() // ref for content item coordinates
+  const containerRef = useRef() // ref for getting expended coordinates
+  const modalRef = useRef() // ref for modal itself
   const rectRef = useRef()
 
   useEffect(() => {
@@ -141,7 +136,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
     const modalBg = modalRef.current.querySelector('.modal-bg')
     modalBg.style.backgroundColor = 'rgb(0 0 0 / 0%)'
-    modalBg.style.transition = 'background-color .4s'
+    modalBg.style.transition = 'background-color .5s'
 
     setTimeout(() => {
       modalRef.current.style.display = 'none'
@@ -205,34 +200,11 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
           <img src={imageLg} alt="title" />
         </div>
         <div className="card">
-          <div className="engagements">
-            <button>
-              <CircleFilled className="circle" />
-              <IoIosPlay className="icon" />
-            </button>
-            <button>
-              <CircleOutline className="circle" />
-              <IoAddOutline className="icon" />
-            </button>
-            <button>
-              <CircleOutline className="circle" />
-              <BsHandThumbsUp className="icon" />
-            </button>
-            <button>
-              <CircleOutline className="circle" />
-              <BsHandThumbsDown className="icon" />
-            </button>
-            <span className="gap">&nbsp;</span>
-            <button
-              onClick={() => {
-                handleOpenModal()
-                setIsActive(false)
-              }}
-            >
-              <CircleOutline className="circle" />
-              <IoIosArrowDown className="icon" />
-            </button>
-          </div>
+          <Engagements
+            open={isOpen}
+            openModal={handleOpenModal}
+            changeActiveState={setIsActive}
+          />
           <div className="details">
             <p className="rating">New</p>
             {maturityRating}
@@ -245,49 +217,14 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
         </div>
       </div>
 
-      <div ref={modalRef} className={!isOpen ? 'hide' : 'modal'}>
-        <div className="modal-bg"></div>
-        <div className="inner-wrapper">
-          <div className="header">
-            <img src={imageLg} alt="title" />
-            <IoCloseOutline
-              className="closeBtn"
-              onClick={() => {
-                handleCloseModal()
-              }}
-            />
-            <div className="gradient"></div>
-            <div className="engagements">
-              <button>
-                <IoIosPlay className="icon" />
-                <span>Play</span>
-              </button>
-              <button>
-                <CircleOutline className="circle" />
-                <IoAddOutline className="icon" />
-              </button>
-              <button>
-                <CircleOutline className="circle" />
-                <BsHandThumbsUp className="icon" />
-              </button>
-              <button>
-                <CircleOutline className="circle" />
-                <BsHandThumbsDown className="icon" />
-              </button>
-            </div>
-          </div>
-          <div className="card">
-            <div className="details">
-              <p className="rating">New</p>
-              {maturityRating}
-              <p className="duration">1hr 15m</p>
-            </div>
-            <div className="tags">
-              <p className="genres">{genreNames}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Modal
+        ref={modalRef}
+        open={isOpen}
+        image={imageLg}
+        handleCloseModal={handleCloseModal}
+        maturityRating={maturityRating}
+        genreNames={genreNames}
+      />
     </div>
   )
 }
