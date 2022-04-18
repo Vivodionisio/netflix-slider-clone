@@ -32,7 +32,7 @@
 }
 
 .ContentItem.open .modal .modal-bg {
-  position: fixed;
+  position: sticky;
   width: 100%;
   height: 100%;
   top: 0;
@@ -96,6 +96,7 @@
 
 .ContentItem.open .modal .card {
   display: block;
+  display: flex;
   max-height: max-content;
   width: 100%;
   background-color: #181818;
@@ -103,6 +104,11 @@
   overflow-y: hidden;
   border-bottom-left-radius: 0.2rem;
   border-bottom-right-radius: 0.2rem;
+}
+
+.ContentItem .modal .card .left {
+  width: 65%;
+  margin: 2% 5%;
 }
 
 .ContentItem .modal .header .engagements {
@@ -233,7 +239,7 @@
 /* Tags/Genres  */
 .ContentItem .modal .card .tags {
   font-weight: 400;
-  margin: 2% 5%;
+  margin: 2% 5% 2% 0;
 }
 
 .ContentItem .card .tags .genres {
@@ -245,13 +251,31 @@
   font-size: 10px;
 }
 
-.ContentItem.open .card .tags .genres span.name {
-  font-size: 6px;
+.ContentItem.open .card .tags .genres span {
+  font-size: 5px;
+}
+
+.ContentItem.open .card .tags .genres span.title {
+  font-size: 5px;
+  color: rgb(131, 131, 131);
 }
 
 .ContentItem .modal .card .tags p.genres span.bullet {
   color: grey;
   font-weight: 900;
+}
+
+/* Description */
+
+.ContentItem.open .modal .card .details {
+  margin-left: 0;
+}
+
+.ContentItem .modal .card .description {
+  line-height: 10px;
+  font-size: 6.5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .hide {

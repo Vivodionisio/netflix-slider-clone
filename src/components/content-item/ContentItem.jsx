@@ -62,14 +62,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     engagementsEle.style.transition = 'opacity .5s .1s'
   }, [isOpen])
 
-  const {
-    backdrop_path,
-    release_dates,
-    genres,
-    original_title,
-    overview,
-    runtime
-  } = itemContent
+  const { backdrop_path, release_dates, genres } = itemContent
 
   const { baseImageUrl, imageSizes } = imageConfig
   const image = baseImageUrl + imageSizes[1] + backdrop_path
@@ -220,10 +213,11 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       <Modal
         ref={modalRef}
         open={isOpen}
-        image={imageLg}
         handleCloseModal={handleCloseModal}
+        image={imageLg}
         maturityRating={maturityRating}
         genreNames={genreNames}
+        itemContent={itemContent}
       />
     </div>
   )
