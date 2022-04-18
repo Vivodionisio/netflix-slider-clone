@@ -18,7 +18,7 @@
   left: calc(-0.444444% / 2);
 }
 
-.ContentScroller .ContentItem {
+.ContentItem {
   position: absolute;
   top: 0px;
   display: flex;
@@ -29,7 +29,7 @@
   transition: left 1s, top 0.25s;
 }
 
-.ContentScroller .ContentItem .container {
+.ContentItem .container {
   position: absolute;
   top: 0;
   width: var(--imageWidth);
@@ -43,7 +43,7 @@
   cursor: pointer;
 }
 
-.ContentScroller .ContentItem.active .container {
+.ContentItem.active .container {
   background-color: rgb(36, 36, 36);
   transform: scale(1.5) translateY(-10%);
   z-index: 400;
@@ -54,23 +54,23 @@
     background-color 0.25s 0s;
 }
 
-.ContentScroller .ContentItem:nth-child(1).active .container,
-.ContentScroller .ContentItem:nth-child(8).active .container {
+.ContentItem:nth-child(1).active .container,
+.ContentItem:nth-child(8).active .container {
   transform-origin: left 50%;
 }
-.ContentScroller .ContentItem:nth-child(6).active .container,
-.ContentScroller .ContentItem:nth-child(13).active .container {
+.ContentItem:nth-child(6).active .container,
+.ContentItem:nth-child(13).active .container {
   transform-origin: right 50%;
 }
 
-.ContentScroller .ContentItem .container img {
+.ContentItem .container img {
   width: 100%;
   border-radius: 0.2rem;
   transition: border-radius 0.25s;
   display: block;
 }
 
-.ContentScroller .ContentItem.active .container img {
+.ContentItem.active .container img {
   border-radius: 0.2rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -80,7 +80,7 @@
 
 /* Item Card Appears Animation */
 
-.ContentScroller .ContentItem .container .card {
+.ContentItem .container .card {
   width: 100%;
   max-height: 0;
   background-color: #181818;
@@ -90,7 +90,7 @@
   transition: opacity 0.3s ease, max-height 0.3s step-end;
 }
 
-.ContentScroller .ContentItem.active .container .card {
+.ContentItem.active .container .card {
   max-height: 500px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -103,12 +103,12 @@
 
 /* Item Card Engagements */
 
-.ContentScroller .ContentItem .container .card .engagements {
+.ContentItem .container .card .engagements {
   margin: 5%;
   display: flex;
 }
 
-.ContentScroller .ContentItem .container .card .engagements button {
+.ContentItem .container .card .engagements button {
   border: none;
   cursor: pointer;
   padding: 0;
@@ -131,11 +131,11 @@
   margin-right: 2%;
 }
 
-.ContentScroller .ContentItem .container .card .engagements .gap {
+.ContentItem .container .card .engagements .gap {
   flex-grow: 1;
 }
 
-.ContentScroller .ContentItem .container .card .engagements button .circle {
+.ContentItem .container .card .engagements button .circle {
   position: absolute;
 }
 
@@ -162,7 +162,7 @@
   fill: #b9b9b9;
 }
 
-.ContentScroller .ContentItem .container .card .engagements button .icon {
+.ContentItem .container .card .engagements button .icon {
   position: absolute;
   height: auto;
   width: 45%;
@@ -191,42 +191,42 @@
   width: 70%;
 }
 
-.ContentScroller .ContentItem .container .card .details {
+.ContentItem .container .card .details {
   margin: 0 5% 5%;
   display: flex;
   align-items: center;
   font-size: 11px;
 }
 
-.ContentScroller .ContentItem .container .card .details .gap {
+.ContentItem .container .card .details .gap {
   flex-grow: 1;
 }
 
-.ContentScroller .ContentItem .container .card .details p.rating {
+.ContentItem .container .card .details p.rating {
   color: rgb(0, 184, 0);
   font-weight: 700;
   margin-right: 4%;
 }
 
-.ContentScroller .ContentItem .container .card .details svg {
+.ContentItem .container .card .details svg {
   width: 8.4%;
   height: auto;
   margin-right: 5%;
 }
 
 /* Tags  */
-.ContentScroller .ContentItem .container .card .tags {
+.ContentItem .container .card .tags {
   font-size: 11px;
   font-weight: 400;
   margin: 0 5% 5%;
 }
 
-.ContentScroller .ContentItem .card .tags p.genres {
+.ContentItem .card .tags p.genres {
   color: white;
   font-weight: 400;
 }
 
-.ContentScroller .ContentItem .container .card .tags p.genres span.bullet {
+.ContentItem .container .card .tags p.genres span.bullet {
   color: grey;
   font-weight: 900;
 }

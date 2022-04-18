@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ContentScroller from './ContentScroller.js'
+import ContentScroller from './components/ContentScroller.js'
 import './App.css'
 import { request, baseUrl, API_KEY } from './request/request.js'
 

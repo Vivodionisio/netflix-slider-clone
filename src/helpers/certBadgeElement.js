@@ -6,7 +6,7 @@ import {
   Cert15,
   Cert18,
   CertR18
-} from '../assets/images/maturity-badges/cert'
+} from '../components/cert'
 
 export const certBadgeElement = certification => {
   if (certification === 'U') return <CertU />

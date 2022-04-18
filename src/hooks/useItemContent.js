@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { baseUrl, API_KEY } from './request/request'
+import { baseUrl, API_KEY } from '../request/request'
 
 const cache = new Map()
 
@@ -36,7 +36,6 @@ export default function useItemContent(itemId) {
   const [title, setTitle] = useState(defaultItem)
   useEffect(() => {
     if (cache.has(itemId)) {
-      // console.log(cache.get(itemId))
       cache.get(itemId).then(data => setTitle(data))
     } else {
       cache.set(
@@ -59,5 +58,3 @@ export default function useItemContent(itemId) {
 
   return title
 }
-
-// cache.set(itemId, data)

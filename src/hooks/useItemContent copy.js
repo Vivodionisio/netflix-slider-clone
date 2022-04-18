@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { baseUrl, API_KEY } from './request/request'
+import { baseUrl, API_KEY } from '../request/request'
 
 const cache = new Map()
 

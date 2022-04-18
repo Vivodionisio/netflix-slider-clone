@@ -13,7 +13,6 @@
 }
 
 /* Modal */
-
 .ContentScroller .ContentItem.open .modal {
   top: 0;
   width: var(--imageWidth);
@@ -102,6 +101,8 @@
   background-color: #181818;
   color: white;
   overflow-y: hidden;
+  border-bottom-left-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
 }
 
 .ContentScroller .ContentItem .modal .header .engagements {

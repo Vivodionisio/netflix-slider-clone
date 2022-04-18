@@ -1,10 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { certBadgeElement } from './helpers/certBadgeElement'
-import { genreElements } from './helpers/genreElements'
-import {
-  CircleFilled,
-  CircleOutline
-} from './assets/images/card-btns/circles.js'
+import { certBadgeElement } from '../helpers/certBadgeElement'
+import { genreElements } from '../helpers/genreElements'
+import { CircleFilled, CircleOutline } from './circles.js'
 import { IoIosPlay } from 'react-icons/io'
 import { IoAddOutline } from 'react-icons/io5'
 import { BsHandThumbsUp } from 'react-icons/bs'
@@ -13,13 +10,12 @@ import { IoIosArrowDown } from 'react-icons/io'
 import { IoCloseOutline } from 'react-icons/io5'
 import './Modal.css'
 
-import useItemContent from './useItemContent'
+import useItemContent from '../hooks/useItemContent'
 
 function ContentItem({ content, style, isDisabled, imageConfig }) {
   const itemId = content.titleId
 
   const [isActive, setIsActive] = useState(false),
-    [isModal, setIsModal] = useState(false),
     [isOpen, setIsOpen] = useState(false),
     itemContent = useItemContent(itemId)
 
@@ -158,8 +154,6 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     ele.style.left = `${rect.left}px`
     ele.style.maxWidth = `${rect.width}px`
     ele.style.transform = 'scale(1, 1)'
-    ele.style.transformOrigin = 'top center'
-
     ele.style.transition = 'top .3s, left .3s, transform .3s,'
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
