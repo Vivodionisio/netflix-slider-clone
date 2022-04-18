@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { certBadgeElement } from '../../helpers/certBadgeElement'
 import { genreElements } from '../../helpers/genreElements'
-import Engagements from './Engagements'
-import { Modal } from './Modal'
-import './modal.css'
+import Engagements from '../shared/Engagements'
+import { Modal } from './modal/Modal'
+import './modal/modal.css'
 
 import useItemContent from '../../hooks/useItemContent'
 

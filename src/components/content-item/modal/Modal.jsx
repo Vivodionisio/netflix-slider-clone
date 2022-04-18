@@ -1,5 +1,5 @@
 import React from 'react'
-import Engagements from './Engagements'
+import Engagements from '../../shared/Engagements'
 import { IoCloseOutline } from 'react-icons/io5'
 import './modal.css'
 

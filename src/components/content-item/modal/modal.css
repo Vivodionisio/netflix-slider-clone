@@ -216,6 +216,7 @@
 
 .ContentItem.open .modal .card .details span {
   margin-right: 1.4%;
+  font-size: 6px;
 }
 
 .ContentItem .modal .card .details span:first-child {
@@ -229,14 +230,7 @@
   margin-right: 1.4%;
 }
 
-.ContentItem .card .tags .genres span.name {
-  font-size: 10px;
-}
-.ContentItem.open .card .tags .genres span.name {
-  font-size: 7px;
-}
-
-/* Tags  */
+/* Tags/Genres  */
 .ContentItem .modal .card .tags {
   font-weight: 400;
   margin: 2% 5%;
@@ -245,6 +239,14 @@
 .ContentItem .card .tags .genres {
   color: white;
   font-weight: 400;
+}
+
+.ContentItem .card .tags .genres span.name {
+  font-size: 10px;
+}
+
+.ContentItem.open .card .tags .genres span.name {
+  font-size: 6px;
 }
 
 .ContentItem .modal .card .tags p.genres span.bullet {
