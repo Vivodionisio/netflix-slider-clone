@@ -5,14 +5,18 @@ import './modal.css'
 
 export const Modal = React.forwardRef(
   (
-    { open, image, maturityRating, genreNames, itemContent, handleCloseModal },
+    {
+      open,
+      image,
+      maturityRating,
+      genreNames,
+      duration,
+      itemContent,
+      handleCloseModal
+    },
     ref
   ) => {
     const { overview, runtime } = itemContent
-
-    // const genres = genreNames.split('•')
-
-    console.log(genreNames)
 
     return (
       <div ref={ref} className={!open ? 'hide' : 'modal'}>
@@ -35,7 +39,8 @@ export const Modal = React.forwardRef(
                 <span className="rating">New</span>
                 <span>1992</span>
                 {maturityRating}
-                <span className="duration">1hr 15m</span>
+                {/* <span className="duration">1hr 15m</span> */}
+                {duration}
               </div>
               <p className="description">{overview}</p>
             </div>

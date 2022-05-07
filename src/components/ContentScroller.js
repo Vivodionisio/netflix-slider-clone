@@ -2,6 +2,15 @@ import { useState, useEffect } from 'react'
 import ContentItem from './content-item/ContentItem.jsx'
 import { ChevronLeft, ChevronRight } from './sliderBtns'
 
+// STATE:
+
+//  • initial
+//     - further condition for post initial slider configeration
+
+//  • isDisabled
+//    - first: flag to disable slide trigger btn for duration of slide transition
+//    - second: see 'ContentItem' component
+
 const ItemSpace = 15.3333333333 // was 110 - width of item (100px) + spacing (10px)
 
 function ContentScroller({ titles, imageConfig }) {
@@ -10,6 +19,8 @@ function ContentScroller({ titles, imageConfig }) {
     [initial, setInitial] = useState(true),
     [isDisabled, setIsDisabled] = useState(false)
 
+  // isDisabled flag set back to false after 1s
+  // Why doesn't this go in a loop?
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsDisabled(false)

@@ -42,6 +42,7 @@
 
 .ContentItem.open .modal .inner-wrapper {
   font-size: 41%;
+  padding-bottom: 10px;
 }
 
 .ContentItem.open .modal img {
@@ -231,7 +232,7 @@
 }
 
 .ContentItem .modal .card .details svg {
-  width: 3.4%;
+  width: 6%;
   height: auto;
   margin-right: 1.4%;
 }
@@ -276,6 +277,7 @@
   font-size: 6.5px;
   margin-top: 15px;
   margin-bottom: 15px;
+  color: #e3e3e3;
 }
 
 .hide {

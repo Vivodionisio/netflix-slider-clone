@@ -1,3 +1,9 @@
+// State:
+//        • isDisabled (prop passed from ContentScroller)
+//           - disable onMouseenter for duration of slide transition
+//        • isActive
+//           - toggles 'active' class (styles for first expand)
+
 import React, { useState, useRef, useEffect } from 'react'
 import { certBadgeElement } from '../../helpers/certBadgeElement'
 import { genreElements } from '../../helpers/genreElements'

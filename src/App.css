@@ -211,7 +211,7 @@
 .ContentItem .container .card .details svg {
   width: 8.4%;
   height: auto;
-  margin-right: 5%;
+  margin-right: 4%;
 }
 
 /* Tags  */
@@ -224,6 +224,7 @@
 .ContentItem .card .tags p.genres {
   color: white;
   font-weight: 400;
+  margin-bottom: 12px;
 }
 
 .ContentItem .container .card .tags p.genres span.bullet {

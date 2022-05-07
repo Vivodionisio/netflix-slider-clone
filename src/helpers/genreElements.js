@@ -12,6 +12,8 @@ export const genreElements = genres => {
           <span className="bullet">&#8226;</span>&nbsp;{genre.name}{' '}
         </span>
       )
+    } else {
+      return null
     }
   })
 }
