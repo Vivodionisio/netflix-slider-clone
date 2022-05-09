@@ -16,7 +16,7 @@ export const Modal = React.forwardRef(
     },
     ref
   ) => {
-    const { overview, runtime } = itemContent
+    const { overview } = itemContent
 
     return (
       <div ref={ref} className={!open ? 'hide' : 'modal'}>

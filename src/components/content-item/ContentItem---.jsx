@@ -1,10 +1,5 @@
-// State:
-//        • isDisabled (prop passed from ContentScroller)
-//           - disable onMouseenter for duration of slide transition
-//        • isActive
-//           - toggles 'active' class (styles for first expand)
-
 import React, { useState, useRef, useEffect } from 'react'
+import { gsap } from 'gsap'
 import { certBadgeElement } from '../../helpers/certBadgeElement'
 import { genreElements } from '../../helpers/genreElements'
 import Engagements from '../shared/Engagements'
@@ -14,17 +9,30 @@ import './modal/modal.css'
 import useItemContent from '../../hooks/useItemContent'
 
 function ContentItem({ content, style, isDisabled, imageConfig }) {
-  const itemId = content.titleId
-
   const [isActive, setIsActive] = useState(false),
     [isOpen, setIsOpen] = useState(false),
-    itemContent = useItemContent(itemId)
+    itemContent = useItemContent(content.titleId)
 
   const inMeRef = useRef() // stores (remembers) if mouse is inside a content item
   const thumbRef = useRef() // ref for original ContentItem initial coordinates
   const containerRef = useRef() // ref for getting expanded coordinates
-  const modalRef = useRef() // ref for modal itself
-  const rectRef = useRef() // is this necessary? Could be a const?
+  const modalRef = useRef() // ref for modal
+  const closeBtnRef = useRef()
+  const gradientRef = useRef()
+  const engagementsRef = useRef()
+  const cardRef = useRef()
+  const wrapperRef = useRef()
+  const modalBgRef = useRef()
+
+  // const refs = useRef({
+  //   closeBtnRef,
+  //   gradientRef,
+  //   engagementsRef,
+  //   cardRef,
+  //   wrapperRef,
+  //   modalBgRef,
+  //   modalRef
+  // })
 
   // Presentation data
   const { backdrop_path, release_dates, genres, runtime } = itemContent
@@ -51,51 +59,37 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
   const maturityRating = certBadgeElement(certification) // helper function
 
-  useEffect(() => {
-    if (!isDisabled && inMeRef.current) {
-      const timer = setTimeout(() => {
-        if (!inMeRef.current) return
-        setIsActive(true)
-      }, 500)
-      return () => {
-        clearTimeout(timer)
-      }
-    }
-  }, [isDisabled])
+  useEffect(scrollerTransitionComplete, [isDisabled])
 
   useEffect(() => {
-    if (!modalRef.current || !rectRef.current || !isOpen) return
+    if (!modalRef.current || !isOpen) return
 
-    const modalBg = modalRef.current.querySelector('.modal-bg')
-    modalBg.style.backgroundColor = 'rgb(0 0 0 / 63%)'
-    modalBg.style.transition = 'background-color .4s .1s'
+    gsap.to(modalBgRef.current, {
+      backgroundColor: 'rgb(0 0 0 / 63%)',
+      transition: 'background-color .4s .1s'
+    })
 
-    const ele = modalRef.current.querySelector('.inner-wrapper')
-    ele.style.position = 'fixed'
-    ele.style.maxWidth = '37.14%'
-    ele.style.width = '340px'
-    ele.style.top = '30px'
-    ele.style.left = '50%'
-    ele.style.transform = 'translateX(-50%) scale(2.6, 2.6)'
-    ele.style.transformOrigin = 'top center'
-    ele.style.transition = 'All .4s .1s'
+    gsap.to(wrapperRef.current, {
+      position: 'fixed',
+      maxWidth: '37.14%',
+      width: '340px',
+      top: '30px',
+      left: '50%',
+      transform: 'translateX(-50%) scale(2.6, 2.6)',
+      transformOrigin: 'top center',
+      duration: 0.4,
+      delay: 0.1
+    })
 
-    const gradEle = modalRef.current.querySelector('.gradient')
-    gradEle.style.opacity = 1
-    gradEle.style.transition = 'opacity .4s .1s'
+    gsap.to(gradientRef.current, { opacity: 1, duration: 0.4, delay: 0.1 })
 
-    const closeBtn = modalRef.current.querySelector('.closeBtn')
-    closeBtn.style.opacity = 1
-    closeBtn.style.transition = 'opacity .5s .1s'
-
-    const engagementsEle = modalRef.current.querySelector('.engagements')
-    engagementsEle.style.opacity = 1
-    engagementsEle.style.transition = 'opacity .5s .1s'
+    const elements = [closeBtnRef.current, engagementsRef.current]
+    gsap.to(elements, { opacity: 1, duration: 0.5, delay: 0.1 })
   }, [isOpen])
 
   let timer
   function handleMouseEnter() {
-    // Slight delay mitigate effect of accidental mouseenters
+    // Slight delay here to mitigate effect of accidental mouseenters
     timer = setTimeout(() => {
       setIsActive(true)
     }, 500)
@@ -107,31 +101,48 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     clearTimeout(timer)
   }
 
-  function handleOpenModal() {
-    rectRef.current = containerRef.current.getBoundingClientRect()
+  // scrollerTransitionComplete, called from useEffect when isDisabled changes.
+  // Context: after slider transition completes, isDisabled changes to back to true and useEfect is called which in turn calls scrollerTransitionComplete - in this function if a contentItem has inMeRef.current with a value of true, the isActive state for item is set to true. (mouse came in and didn't leave - see handle leave above)
 
-    modalRef.current.style.display = 'flex'
+  function scrollerTransitionComplete() {
+    if (!isDisabled && inMeRef.current) {
+      const timer = setTimeout(() => {
+        setIsActive(true)
+      }, 500)
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }
+
+  function handleOpenModal() {
+    const rect = containerRef.current.getBoundingClientRect()
+
+    gsap.to(modalRef.current, { display: 'flex' })
 
     const modalBg = modalRef.current.querySelector('.modal-bg')
-    modalBg.style.display = 'block'
-    modalBg.style.backgroundColor = 'rgb(0 0 0 / 0%)'
-    modalBg.style.transition = 'background-color .5s'
+    gsap.to(modalBg, {
+      display: 'block',
+      backgroundColor: 'rgb(0 0 0 / 0%)',
+      transition: 'background-color .5s'
+    })
 
     const ele = modalRef.current.querySelector('.inner-wrapper')
-    ele.style.position = 'fixed'
-    ele.style.left = `${rectRef.current.left}px`
-    ele.style.top = `${rectRef.current.top}px`
-    ele.style.maxWidth = `${rectRef.current.width}px`
-    ele.style.transformOrigin = 'top center'
+    gsap.set(ele, {
+      position: 'fixed',
+      top: `${rect.top}px`,
+      left: `${rect.left}px`,
+      maxWidth: `${rect.width}px`,
+      transformOrigin: 'top center'
+    })
 
     const closeBtn = modalRef.current.querySelector('.closeBtn')
-    closeBtn.style.opacity = 0
-
     const gradEle = modalRef.current.querySelector('.gradient')
-    gradEle.style.opacity = 0
-
     const engagementsEle = modalRef.current.querySelector('.engagements')
-    engagementsEle.style.opacity = 0
+
+    const elements = [closeBtn, gradEle, engagementsEle]
+
+    gsap.set(elements, { opacity: 0 })
 
     const card = modalRef.current.querySelector('.card')
     card.style.opacity = 1
@@ -142,38 +153,32 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   function handleCloseModal() {
     const rect = thumbRef.current.getBoundingClientRect()
 
-    const modalBg = modalRef.current.querySelector('.modal-bg')
-    modalBg.style.backgroundColor = 'rgb(0 0 0 / 0%)'
-    modalBg.style.transition = 'background-color .5s'
+    gsap.to(modalBgRef.current, {
+      backgroundColor: 'rgb(0 0 0 / 0%)',
+      duration: 0.5
+    })
 
     setTimeout(() => {
       modalRef.current.style.display = 'none'
-      modalBg.style.display = 'none'
+      modalBgRef.current.style.display = 'none'
     }, 400)
 
-    const ele = modalRef.current.querySelector('.inner-wrapper')
-    ele.style.position = 'absolute'
-    ele.style.top = `${rect.top}px`
-    ele.style.left = `${rect.left}px`
-    ele.style.maxWidth = `${rect.width}px`
-    ele.style.transform = 'scale(1, 1)'
-    ele.style.transition = 'top .3s, left .3s, transform .3s,'
+    gsap.to(wrapperRef.current, {
+      position: 'absolute',
+      top: `${rect.top}px`,
+      left: `${rect.left}px`,
+      maxWidth: `${rect.width}px`,
+      scaleY: 1,
+      scaleX: 1
+    })
 
-    const closeBtn = modalRef.current.querySelector('.closeBtn')
-    closeBtn.style.opacity = 0
-    closeBtn.style.transition = 'opacity .3s'
-
-    const gradEle = modalRef.current.querySelector('.gradient')
-    gradEle.style.opacity = 0
-    gradEle.style.transition = 'opacity .3s'
-
-    const engagementsEle = modalRef.current.querySelector('.engagements')
-    engagementsEle.style.opacity = 0
-    engagementsEle.style.transition = 'opacity .3s'
-
-    const card = modalRef.current.querySelector('.card')
-    card.style.opacity = 0
-    card.style.transition = 'opacity .3s'
+    const elements = [
+      closeBtnRef.current,
+      gradientRef.current,
+      engagementsRef.current,
+      cardRef.current
+    ]
+    gsap.to(elements, { opacity: 0, duration: 0.3 })
 
     setTimeout(() => setIsOpen(false), 400)
   }
@@ -207,8 +212,9 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
         <div className="header">
           <img src={imageLg} alt="title" />
         </div>
-        <div className="card">
+        <div ref={cardRef} className="card">
           <Engagements
+            ref={engagementsRef}
             open={isOpen}
             openModal={handleOpenModal}
             changeActiveState={setIsActive}

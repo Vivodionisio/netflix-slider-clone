@@ -5,8 +5,7 @@ import { ChevronLeft, ChevronRight } from './sliderBtns'
 // STATE:
 
 //  • initial
-//     - further condition for post initial slider configeration
-
+//    - further condition for post initial slider configeration
 //  • isDisabled
 //    - first: flag to disable slide trigger btn for duration of slide transition
 //    - second: see 'ContentItem' component
@@ -21,7 +20,9 @@ function ContentScroller({ titles, imageConfig }) {
 
   // isDisabled flag set back to false after 1s
   // Why doesn't this go in a loop?
+  // Asynchronously after dom has been updated in the browser (after the rendering)
   useEffect(() => {
+    console.log('use effect')
     const timer = setTimeout(() => {
       setIsDisabled(false)
     }, 1000)

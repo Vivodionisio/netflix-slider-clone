@@ -4,7 +4,7 @@ import { genreElements } from '../../helpers/genreElements'
 import Engagements from '../shared/Engagements'
 import { Modal } from './modal/Modal'
 import './modal/modal.css'
-import { gsap } from 'gsap'
+
 import useItemContent from '../../hooks/useItemContent'
 
 function ContentItem({ content, style, isDisabled, imageConfig }) {
@@ -16,7 +16,6 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   const thumbRef = useRef() // ref for original ContentItem initial coordinates
   const containerRef = useRef() // ref for getting expanded coordinates
   const modalRef = useRef() // ref for modal itself
-  const dOfModal = gsap.utils.selector(modalRef) // to select decendent elements
 
   // Presentation data
   const { backdrop_path, release_dates, genres, runtime } = itemContent
@@ -48,33 +47,31 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   useEffect(() => {
     if (!modalRef.current || !isOpen) return
 
-    gsap.to(dOfModal('.modal-gb'), {
-      backgroundColor: 'rgb(0 0 0 / 63%)',
-      duration: 0.4,
-      delay: 0.1
-    })
+    const modalBg = modalRef.current.querySelector('.modal-bg')
+    modalBg.style.backgroundColor = 'rgb(0 0 0 / 63%)'
+    modalBg.style.transition = 'background-color .4s .1s'
 
-    gsap.set(dOfModal('.inner-wrapper'), {
-      position: 'fixed',
-      transformOrigin: 'top center'
-    })
+    const ele = modalRef.current.querySelector('.inner-wrapper')
+    ele.style.position = 'fixed'
+    ele.style.maxWidth = '37.14%'
+    ele.style.width = '340px'
+    ele.style.top = '30px'
+    ele.style.left = '50%'
+    ele.style.transform = 'translateX(-50%) scale(2.6, 2.6)'
+    ele.style.transformOrigin = 'top center'
+    ele.style.transition = 'All .4s .1s'
 
-    gsap.to(dOfModal('.inner-wrapper'), {
-      maxWidth: '37.14%',
-      width: '340px',
-      top: '30px',
-      left: '50%',
-      xPercent: -50,
-      scaleX: 2.6,
-      scaleY: 2.6
-    })
+    const gradEle = modalRef.current.querySelector('.gradient')
+    gradEle.style.opacity = 1
+    gradEle.style.transition = 'opacity .4s .1s'
 
-    gsap.to(dOfModal('.gradient'), { opacity: 1, duration: 0.4, delay: 0.1 })
-    gsap.to(dOfModal('.closeBtn, engagements'), {
-      opacity: 1,
-      duration: 0.5,
-      delay: 0.1
-    })
+    const closeBtn = modalRef.current.querySelector('.closeBtn')
+    closeBtn.style.opacity = 1
+    closeBtn.style.transition = 'opacity .5s .1s'
+
+    const engagementsEle = modalRef.current.querySelector('.engagements')
+    engagementsEle.style.opacity = 1
+    engagementsEle.style.transition = 'opacity .5s .1s'
   }, [isOpen])
 
   let timer
@@ -108,22 +105,31 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   function handleOpenModal() {
     const rectRef = containerRef.current.getBoundingClientRect()
 
-    gsap.defaults({ duration: 0.4 })
-    gsap.set(modalRef.current, { display: 'flex' })
+    modalRef.current.style.display = 'flex'
 
-    gsap.set(dOfModal('.modal-bg'), { display: 'block' })
-    gsap.to(dOfModal('.modal-bg'), { backgroundColor: 'rgb(0 0 0 / 0%)' })
+    const modalBg = modalRef.current.querySelector('.modal-bg')
+    modalBg.style.display = 'block'
+    modalBg.style.backgroundColor = 'rgb(0 0 0 / 0%)'
+    modalBg.style.transition = 'background-color .5s'
 
-    gsap.set(dOfModal('.inner-wrapper'), {
-      position: 'fixed',
-      top: `${rectRef.top}px`,
-      left: `${rectRef.left}px`,
-      maxWidth: `${rectRef.width}px`,
-      transformOrigin: 'top center'
-    })
+    const ele = modalRef.current.querySelector('.inner-wrapper')
+    ele.style.position = 'fixed'
+    ele.style.left = `${rectRef.left}px`
+    ele.style.top = `${rectRef.top}px`
+    ele.style.maxWidth = `${rectRef.width}px`
+    ele.style.transformOrigin = 'top center'
 
-    gsap.set(dOfModal('.closeBtn, .gradient, .engagements'), { opacity: 0 })
-    gsap.set(dOfModal('.card'), { opacity: 1 })
+    const closeBtn = modalRef.current.querySelector('.closeBtn')
+    closeBtn.style.opacity = 0
+
+    const gradEle = modalRef.current.querySelector('.gradient')
+    gradEle.style.opacity = 0
+
+    const engagementsEle = modalRef.current.querySelector('.engagements')
+    engagementsEle.style.opacity = 0
+
+    const card = modalRef.current.querySelector('.card')
+    card.style.opacity = 1
 
     setIsOpen(true)
   }
@@ -131,27 +137,39 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   function handleCloseModal() {
     const rect = thumbRef.current.getBoundingClientRect()
 
-    gsap.to(dOfModal('.modal-bg'), { backgroundColor: 'rgb(0 0 0 / 0%)' })
+    const modalBg = modalRef.current.querySelector('.modal-bg')
+    modalBg.style.backgroundColor = 'rgb(0 0 0 / 0%)'
+    modalBg.style.transition = 'background-color .5s'
 
-    const elements = [modalRef.current, dOfModal('.modal-bg')]
-    gsap.set(elements, { display: 'none', delay: 0.4 })
+    setTimeout(() => {
+      modalRef.current.style.display = 'none'
+      modalBg.style.display = 'none'
+    }, 400)
 
-    gsap.set(dOfModal('.inner-wrapper'), { position: 'absolute' })
-    gsap.to(dOfModal('.inner-wrapper'), {
-      maxWidth: `${rect.width}px`,
-      top: `${rect.top}px`,
-      left: `${rect.left}px`,
-      scaleX: 1,
-      scaleY: 1,
-      xPercent: 0,
-      duration: 0.5
-    })
+    const ele = modalRef.current.querySelector('.inner-wrapper')
+    ele.style.position = 'absolute'
+    ele.style.top = `${rect.top}px`
+    ele.style.left = `${rect.left}px`
+    ele.style.maxWidth = `${rect.width}px`
+    ele.style.transform = 'scale(1, 1)'
+    ele.style.transition = 'top .3s, left .3s, transform .3s,'
 
-    gsap.to(
-      dOfModal('.closeBtn, .gradient, .engagements, .card', { opacity: 0 })
-    )
+    const closeBtn = modalRef.current.querySelector('.closeBtn')
+    closeBtn.style.opacity = 0
+    closeBtn.style.transition = 'opacity .3s'
 
-    // setIsOpen(false)
+    const gradEle = modalRef.current.querySelector('.gradient')
+    gradEle.style.opacity = 0
+    gradEle.style.transition = 'opacity .3s'
+
+    const engagementsEle = modalRef.current.querySelector('.engagements')
+    engagementsEle.style.opacity = 0
+    engagementsEle.style.transition = 'opacity .3s'
+
+    const card = modalRef.current.querySelector('.card')
+    card.style.opacity = 0
+    card.style.transition = 'opacity .3s'
+
     setTimeout(() => setIsOpen(false), 400)
   }
 
@@ -168,7 +186,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
       <div
         ref={containerRef}
-        className={!isOpen ? 'container' : 'container hide'}
+        className={!isOpen ? 'container' : 'hide'}
         onMouseEnter={
           isDisabled
             ? () => {

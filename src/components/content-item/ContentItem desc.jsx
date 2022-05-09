@@ -38,7 +38,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
   function handleOpenModal() {
     // INITIAL POSITION FOR MODAL ELEMENT
-    // get the coordinates for the expanded ContentItem, and with them, set the initial position for the modal, and show it - the final style and position for the modal is set in the useEffect hook upon rerender caused by the following setIsOpen...
+    // get the coordinates for the expanded ContentItem,to set the initial position for the modal and show it - the final style and position for the modal is set in the useEffect hook upon rerender caused by the following setIsOpen...
     setIsOpen(true)
   }
 
