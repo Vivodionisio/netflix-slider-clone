@@ -17,7 +17,6 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   const containerRef = useRef() // ref for getting expanded coordinates
   const modalRef = useRef() // ref for modal itself
   const dOfModal = gsap.utils.selector(modalRef) // to select decendent elements
-  let midRef = useRef()
 
   // Presentation data
   const { backdrop_path, release_dates, genres, runtime } = itemContent
@@ -106,11 +105,11 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   }
 
   function handleOpenModal() {
-    midRef = containerRef.current.getBoundingClientRect()
+    const rectRef = containerRef.current.getBoundingClientRect()
 
-    const position = midRef.left + midRef.width / 2 // middle of box relative to window
+    const position = rectRef.left + rectRef.width / 2 // middle of box relative to window
     const percentage = window.innerWidth / position
-    const mapPercentageToBox = percentage * midRef.width
+    const mapPercentageToBox = percentage * rectRef.width
 
     gsap.set(modalRef.current, { display: 'flex' })
 
@@ -119,14 +118,10 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
     gsap.set(dOfModal('.inner-wrapper'), {
       position: 'fixed',
-      top: `${midRef.top}px`,
-      left: `${midRef.left}px`,
-      maxWidth: `${midRef.width}px`,
-      width: `${midRef.width}px`,
-      transformOrigin: `top`,
-      xPercent: 0,
-      scaleX: 1,
-      scaleY: 1
+      top: `${rectRef.top}px`,
+      left: `${rectRef.left}px`,
+      maxWidth: `${rectRef.width}px`,
+      transformOrigin: `top`
     })
 
     gsap.set(dOfModal('.closeBtn, .gradient, .engagements'), { opacity: 0 })
@@ -138,7 +133,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   function handleCloseModal() {
     const rect = thumbRef.current.getBoundingClientRect()
 
-    gsap.defaults({ ease: 'linear', duration: 0.5 })
+    gsap.defaults({ ease: 'linea', duration: 0.5 })
     gsap.to(dOfModal('.modal-bg'), { backgroundColor: 'rgb(0 0 0 / 0%)' })
 
     gsap.set(dOfModal('.inner-wrapper'), {
@@ -146,12 +141,14 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       transformOrigin: 'top'
     })
     gsap.to(dOfModal('.inner-wrapper'), {
-      width: `${midRef.width}px`,
+      maxWidth: `${rect.width}px`,
       top: `${rect.top}px`,
       left: `${rect.left}px`,
-      scaleX: 0.6366666667, // quirk - expected .66666667 to work
-      scaleY: 0.6366666667,
-      xPercent: -18, // quirk - expected 0 to work
+      scaleX: 0.96666666667,
+      scaleY: 0.96666666667,
+      // scaleX: 1,
+      // scaleY: 1,
+      xPercent: 0,
       duration: 0.5,
       ease: 'none'
     })

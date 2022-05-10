@@ -298,3 +298,7 @@
   visibility: hidden;
   transition: visibility 0s ease 0s;
 }
+
+.hide {
+  display: none;
+}

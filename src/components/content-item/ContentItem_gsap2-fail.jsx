@@ -1,12 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { gsap } from 'gsap'
 import { certBadgeElement } from '../../helpers/certBadgeElement'
 import { genreElements } from '../../helpers/genreElements'
 import Engagements from '../shared/Engagements'
 import { Modal } from './modal/Modal'
 import './modal/modal.css'
-
+import { gsap } from 'gsap'
 import useItemContent from '../../hooks/useItemContent'
+import {
+  initialParameters,
+  openModal,
+  closeModal
+} from '../../helpers/animation'
 
 function ContentItem({ content, style, isDisabled, imageConfig }) {
   const [isActive, setIsActive] = useState(false),
@@ -16,30 +20,15 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   const inMeRef = useRef() // stores (remembers) if mouse is inside a content item
   const thumbRef = useRef() // ref for original ContentItem initial coordinates
   const containerRef = useRef() // ref for getting expanded coordinates
-  const modalRef = useRef() // ref for modal
-  const closeBtnRef = useRef()
-  const gradientRef = useRef()
-  const engagementsRef = useRef()
-  const cardRef = useRef()
-  const wrapperRef = useRef()
-  const modalBgRef = useRef()
-
-  // const refs = useRef({
-  //   closeBtnRef,
-  //   gradientRef,
-  //   engagementsRef,
-  //   cardRef,
-  //   wrapperRef,
-  //   modalBgRef,
-  //   modalRef
-  // })
+  const modalRef = useRef() // ref for modal itself
+  const dOfModal = gsap.utils.selector(modalRef) // to select decendent elements
+  let master = useRef()
 
   // Presentation data
   const { backdrop_path, release_dates, genres, runtime } = itemContent
   const { baseImageUrl, imageSizes } = imageConfig
   const image = baseImageUrl + imageSizes[1] + backdrop_path
   const imageLg = baseImageUrl + imageSizes[2] + backdrop_path
-
   const hr = Math.floor(runtime / 60)
   const m = runtime % 60
   const duration = (
@@ -48,45 +37,29 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       {m && `${m}m `}
     </span>
   )
-
   const genreNames = genreElements(genres) // helper function
-
   const certification = release_dates.results
     .find(result => result.iso_3166_1 === 'GB')
     ?.release_dates.filter(
       entry => entry.certification !== '' || ''
     )[0].certification
-
   const maturityRating = certBadgeElement(certification) // helper function
 
+  // Use effects
   useEffect(scrollerTransitionComplete, [isDisabled])
 
   useEffect(() => {
     if (!modalRef.current || !isOpen) return
 
-    gsap.to(modalBgRef.current, {
-      backgroundColor: 'rgb(0 0 0 / 63%)',
-      transition: 'background-color .4s .1s'
-    })
+    master.current = gsap.timeline()
+    master.current
+      .to(initialParameters(modalRef, dOfModal, containerRef))
+      .to(openModal(dOfModal))
+      .addPause()
+      .to(closeModal(dOfModal, thumbRef, modalRef))
+  }, [])
 
-    gsap.to(wrapperRef.current, {
-      position: 'fixed',
-      maxWidth: '37.14%',
-      width: '340px',
-      top: '30px',
-      left: '50%',
-      transform: 'translateX(-50%) scale(2.6, 2.6)',
-      transformOrigin: 'top center',
-      duration: 0.4,
-      delay: 0.1
-    })
-
-    gsap.to(gradientRef.current, { opacity: 1, duration: 0.4, delay: 0.1 })
-
-    const elements = [closeBtnRef.current, engagementsRef.current]
-    gsap.to(elements, { opacity: 1, duration: 0.5, delay: 0.1 })
-  }, [isOpen])
-
+  // functions
   let timer
   function handleMouseEnter() {
     // Slight delay here to mitigate effect of accidental mouseenters
@@ -116,71 +89,17 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   }
 
   function handleOpenModal() {
-    const rect = containerRef.current.getBoundingClientRect()
-
-    gsap.to(modalRef.current, { display: 'flex' })
-
-    const modalBg = modalRef.current.querySelector('.modal-bg')
-    gsap.to(modalBg, {
-      display: 'block',
-      backgroundColor: 'rgb(0 0 0 / 0%)',
-      transition: 'background-color .5s'
-    })
-
-    const ele = modalRef.current.querySelector('.inner-wrapper')
-    gsap.set(ele, {
-      position: 'fixed',
-      top: `${rect.top}px`,
-      left: `${rect.left}px`,
-      maxWidth: `${rect.width}px`,
-      transformOrigin: 'top center'
-    })
-
-    const closeBtn = modalRef.current.querySelector('.closeBtn')
-    const gradEle = modalRef.current.querySelector('.gradient')
-    const engagementsEle = modalRef.current.querySelector('.engagements')
-
-    const elements = [closeBtn, gradEle, engagementsEle]
-
-    gsap.set(elements, { opacity: 0 })
-
-    const card = modalRef.current.querySelector('.card')
-    card.style.opacity = 1
-
+    // console.log(master.current)
+    // master.current.play()
     setIsOpen(true)
   }
 
   function handleCloseModal() {
-    const rect = thumbRef.current.getBoundingClientRect()
-
-    gsap.to(modalBgRef.current, {
-      backgroundColor: 'rgb(0 0 0 / 0%)',
-      duration: 0.5
-    })
+    master.current.reverse()
 
     setTimeout(() => {
-      modalRef.current.style.display = 'none'
-      modalBgRef.current.style.display = 'none'
-    }, 400)
-
-    gsap.to(wrapperRef.current, {
-      position: 'absolute',
-      top: `${rect.top}px`,
-      left: `${rect.left}px`,
-      maxWidth: `${rect.width}px`,
-      scaleY: 1,
-      scaleX: 1
-    })
-
-    const elements = [
-      closeBtnRef.current,
-      gradientRef.current,
-      engagementsRef.current,
-      cardRef.current
-    ]
-    gsap.to(elements, { opacity: 0, duration: 0.3 })
-
-    setTimeout(() => setIsOpen(false), 400)
+      setIsOpen(false)
+    }, 550)
   }
 
   return (
@@ -212,9 +131,8 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
         <div className="header">
           <img src={imageLg} alt="title" />
         </div>
-        <div ref={cardRef} className="card">
+        <div className="card">
           <Engagements
-            ref={engagementsRef}
             open={isOpen}
             openModal={handleOpenModal}
             changeActiveState={setIsActive}
