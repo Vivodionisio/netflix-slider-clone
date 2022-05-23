@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# my experiments
+ContentItem copy.jsx
+ContentItem desc.jsx
+ContentItem_v1.jsx
