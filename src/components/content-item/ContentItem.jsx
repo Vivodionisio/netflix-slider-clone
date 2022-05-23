@@ -1,3 +1,5 @@
+// Transitions (scaling and positioning) work best at screen width of 1449
+
 import React, { useState, useRef, useEffect } from 'react'
 import { certBadgeElement } from '../../helpers/certBadgeElement'
 import { genreElements } from '../../helpers/genreElements'
@@ -34,7 +36,8 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     </span>
   )
 
-  const genreNames = genreElements(genres) // helper function
+  // helper function
+  const genreNames = genreElements(genres)
 
   const certification = release_dates.results
     .find(result => result.iso_3166_1 === 'GB')
@@ -42,12 +45,16 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       entry => entry.certification !== '' || ''
     )[0].certification
 
-  const maturityRating = certBadgeElement(certification) // helper function
+  // helper function
+  const maturityRating = certBadgeElement(certification)
 
+  // useEffects
   useEffect(scrollerTransitionComplete, [isDisabled])
 
   useEffect(() => {
     if (!modalRef.current || !isOpen) return
+
+    gsap.set('modalRef.current', { xPecent: -50, left: '50%' })
 
     gsap.set(dOfModal('.inner-wrapper'), {
       position: 'fixed'
@@ -61,14 +68,14 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       xPercent: -50,
       scaleX: 2.6,
       scaleY: 2.6,
-      duration: 0.3
+      duration: 0.4
     })
 
     gsap.to(dOfModal('.gradient'), { opacity: 1, duration: 0.2, delay: 0.1 })
     gsap.to(dOfModal('.closeBtn, engagements'), {
       opacity: 1,
       delay: 0.1,
-      duration: 0.3
+      duration: 0.4
     })
 
     gsap.set(dOfModal('.modal-bg'), { backgroundColor: 'rgb(0 0 0 / 63%)' })
@@ -78,6 +85,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     })
   }, [isOpen])
 
+  // Functions
   let timer
   function handleMouseEnter() {
     // Slight delay here to mitigate effect of accidental mouseenters
@@ -135,21 +143,31 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   function handleCloseModal() {
     const rect = thumbRef.current.getBoundingClientRect()
 
-    gsap.defaults({ ease: 'linear', duration: 0.5 })
+    console.log(rect.width)
+    const percentage = rect.width / 100
+
+    gsap.defaults({ ease: 'none', duration: 0.4 })
     gsap.to(dOfModal('.modal-bg'), { backgroundColor: 'rgb(0 0 0 / 0%)' })
 
     gsap.set(dOfModal('.inner-wrapper'), {
-      position: 'absolute',
+      position: 'fixed',
       transformOrigin: 'top'
     })
+
+    // Two elements: 'container' and 'modal'.
+    // The container expands on mouse enter by 1.5 adding half its value.
+    // handleOpenModal: onClick the modal appears, its initial postion and width defined by the the boundingClient of the expanded container. A change of state then triggers a useEffect which scales the modal by 2.6.
+    // handlecloseModal: onclick the modal scales down past 1 to .6666667 (two thirds of 1) sinces its headed for dimensions of the container in its original state before expansion.
+    // since that scale value will act upon the new width value, we'll need to make up the difference.
+    // TranslateX() (xPercent): translateX  was used to center the modal along with position left. I assumed translate could be set back to 0 but it for some reason 16.7 percent is the magic number! (at least for this approach)
     gsap.to(dOfModal('.inner-wrapper'), {
-      width: `${midRef.width}px`,
+      width: `${rect.width + percentage * 50.3}`,
       top: `${rect.top}px`,
       left: `${rect.left}px`,
-      scaleX: 0.6266666667, // fiddly - expected .66666667 to work
-      scaleY: 0.6266666667,
-      xPercent: -18.2, // fiddly - expected 0 to work
-      duration: 0.5,
+      scaleX: 0.66666667,
+      scaleY: 0.66666667,
+      xPercent: -16.7,
+      duration: 0.4,
       ease: 'none'
     })
     gsap.to(dOfModal('.closeBtn, .gradient, .engagements, .card'), {
