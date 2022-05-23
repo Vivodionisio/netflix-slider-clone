@@ -37,7 +37,8 @@
   height: 100%;
   top: 0;
   left: 0;
-  display: none;
+  visibility: hidden;
+  background-color: 'rgb(0 0 0)';
 }
 
 .ContentItem.open .modal .inner-wrapper {
