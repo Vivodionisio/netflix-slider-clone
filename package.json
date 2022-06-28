@@ -1,5 +1,6 @@
 {
   "name": "netflix-scroller",
+  "homepage": "/netflix-slider-clone",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

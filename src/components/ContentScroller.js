@@ -19,8 +19,6 @@ function ContentScroller({ titles, imageConfig }) {
     [isDisabled, setIsDisabled] = useState(false)
 
   // isDisabled flag set back to false after 1s
-  // Why doesn't this go in a loop?
-  // Asynchronously after dom has been updated in the browser (after the rendering)
   useEffect(() => {
     console.log('use effect')
     const timer = setTimeout(() => {
@@ -64,8 +62,6 @@ function ContentScroller({ titles, imageConfig }) {
     if (i > 0) item.position = visible[i - 1].position + ItemSpace
     // skip the first item, then take prev position and add itemSpace
   })
-
-  // Now render the items and the 'forward' and 'back' buttons.
 
   return (
     <>

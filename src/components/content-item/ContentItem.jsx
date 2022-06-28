@@ -36,7 +36,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     </span>
   )
 
-  // helper function
+  // Api Data
   const genreNames = genreElements(genres)
 
   const certification = release_dates.results
@@ -45,7 +45,6 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       entry => entry.certification !== '' || ''
     )[0].certification
 
-  // helper function
   const maturityRating = certBadgeElement(certification)
 
   // useEffects
@@ -101,7 +100,8 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   }
 
   // scrollerTransitionComplete, called from useEffect when isDisabled changes.
-  // Context: after slider transition completes, isDisabled changes to back to true and useEfect is called which in turn calls scrollerTransitionComplete - in this function if a contentItem has inMeRef.current with a value of true, the isActive state for item is set to true. (mouse came in and didn't leave - see handle leave above)
+  // If when scroller transition completes the mouse is on a contentItem, we want that item to expand.
+  // Desc: after slider transition completes, isDisabled changes back to true and useEfect is called which in turn calls scrollerTransitionComplete - in this function if a contentItem has inMeRef.current with a value of true, the isActive state for item is set to true. (mouse came in and didn't leave - see handle leave above)
 
   function scrollerTransitionComplete() {
     if (!isDisabled && inMeRef.current) {
@@ -142,8 +142,6 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
 
   function handleCloseModal() {
     const rect = thumbRef.current.getBoundingClientRect()
-
-    console.log(rect.width)
     const percentage = rect.width / 100
 
     gsap.defaults({ ease: 'none', duration: 0.4 })
@@ -154,12 +152,10 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
       transformOrigin: 'top'
     })
 
-    // Two elements: 'container' and 'modal'.
-    // The container expands on mouse enter by 1.5 adding half its value.
-    // handleOpenModal: onClick the modal appears, its initial postion and width defined by the the boundingClient of the expanded container. A change of state then triggers a useEffect which scales the modal by 2.6.
-    // handlecloseModal: onclick the modal scales down past 1 to .6666667 (two thirds of 1) sinces its headed for dimensions of the container in its original state before expansion.
+    // The modal isn't merely returning to it previous size (that of the expanded thumnail), it needs to decreece further to the original size of the thumnail. So the modal scales down past 1 to 0.66666667.
     // since that scale value will act upon the new width value, we'll need to make up the difference.
-    // TranslateX() (xPercent): translateX  was used to center the modal along with position left. I assumed translate could be set back to 0 but it for some reason 16.7 percent is the magic number! (at least for this approach)
+    // TranslateX() (xPercent as its written in GSAP)  was used to center the modal along with position left. I assumed translate would be set back to 0 but for some reason 16.7 percent is the magic number here.
+
     gsap.to(dOfModal('.inner-wrapper'), {
       width: `${rect.width + percentage * 50.3}`,
       top: `${rect.top}px`,

@@ -1,3 +1,7 @@
+// getConfig() fetches the secure_base_url and image sizes data which are two of three pieces of data necessary for assembling a fully qualified image url.
+// search() for title ids of the specified category. The url to make this fetch is imported from request/request.js
+// Rendering: Since ContentScroller passes in fetched data, it is rendered conditionally.
+
 import React, { useState, useEffect } from 'react'
 import ContentScroller from './components/ContentScroller.js'
 import './App.css'
@@ -40,7 +44,7 @@ function App() {
           })
           setTitleIds(titleId)
         } else {
-          console.log('What is happening brother')
+          console.log('What is happening brother?')
         }
       } catch (error) {
         console.log(`getNew ${error}`)
