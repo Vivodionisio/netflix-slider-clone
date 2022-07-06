@@ -1,7 +1,3 @@
-// getConfig() fetches the secure_base_url and image sizes data which are two of three pieces of data necessary for assembling a fully qualified image url.
-// search() for title ids of the specified category. The url to make this fetch is imported from request/request.js
-// Rendering: Since ContentScroller passes in fetched data, it is rendered conditionally.
-
 import React, { useState, useEffect } from 'react'
 import ContentScroller from './components/ContentScroller.js'
 import './App.css'
@@ -14,6 +10,7 @@ function App() {
 
   useEffect(() => {
     getConfig()
+    // getConfig() fetches the secure_base_url and image sizes data which are the two initial pieces of data necessary for assembling a fully qualified image url.
     async function getConfig() {
       let configUrl = `${baseUrl}configuration?${API_KEY}`
       try {
@@ -31,20 +28,20 @@ function App() {
         console.log(`Config ${error}`)
       }
     }
-    search()
-    async function search() {
+    getSelection()
+    // getSelection() fetches title ids of the specified category. The url to make this fetch is imported from request/request.js
+    async function getSelection() {
       try {
         const response = await fetch(request[0].getNewMoviesUrl)
         if (response.ok === true) {
           const data = await response.json()
-          console.log(data)
           const titleId = data.results.map(item => {
             const { id } = item
             return { titleId: id }
           })
           setTitleIds(titleId)
         } else {
-          console.log('What is happening brother?')
+          console.log('What is happening?')
         }
       } catch (error) {
         console.log(`getNew ${error}`)
@@ -54,6 +51,7 @@ function App() {
 
   return (
     <div className="App">
+      {/* Rendering: Since ContentScroller passes in fetched data, it is rendered conditionally. */}
       {titleIds ? (
         <ContentScroller
           titles={titleIds}

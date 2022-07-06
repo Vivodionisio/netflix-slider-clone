@@ -1,4 +1,15 @@
-// Transitions (scaling and positioning) work best at screen width of 1449
+/* 
+Interactions with a ContentItem:
+The ContentItem has three child elements, with classnames 'thumb', 'container' and 'modal' respectively. 
+* thumb - this displays the title image, and can't be interacted with. 
+* Container - this displays the title image and is initially the same size as the thumb. However it expands on mouseenter to reveal a card at the bottom of the image, with information about the presentation and a button with a down arrow for revealing the modal. 
+* Modal - when the openModel is called, the modal appears above the container with the same width and top position, but with height added to the bottom to accomodate the card. openModal sets state triggering a useEffect in which the code expand the modal to its full size. The close button, shrinks the modal to the size of the thumb.
+
+In short, the ContentItem has three sizes: 
+1. container initial (same as thumb)
+2. container expanded and modal initial
+3. modal expanded
+*/
 
 import React, { useState, useRef, useEffect } from 'react'
 import { certBadgeElement } from '../../helpers/certBadgeElement'
@@ -14,14 +25,14 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     [isOpen, setIsOpen] = useState(false),
     itemContent = useItemContent(content.titleId)
 
-  const inMeRef = useRef() // stores (remembers) if mouse is inside a content item
+  const inMeRef = useRef() // 'true' if mouse is inside a ContentItem
   const thumbRef = useRef() // ref for original ContentItem initial coordinates
   const containerRef = useRef() // ref for getting mid-expanded coordinates
   let midRef = useRef() // for storing mid-expanded coordinates
   const modalRef = useRef() // ref for modal itself
-  const dOfModal = gsap.utils.selector(modalRef) // to select decendent elements
+  const dOfModal = gsap.utils.selector(modalRef) // to select decendent elements of modal
 
-  // Presentation data
+  // Presentation data - pulled in from useItemContent hook
   const { backdrop_path, release_dates, genres, runtime } = itemContent
   const { baseImageUrl, imageSizes } = imageConfig
   const image = baseImageUrl + imageSizes[1] + backdrop_path
@@ -99,10 +110,11 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
     clearTimeout(timer)
   }
 
-  // scrollerTransitionComplete, called from useEffect when isDisabled changes.
-  // If when scroller transition completes the mouse is on a contentItem, we want that item to expand.
-  // Desc: after slider transition completes, isDisabled changes back to true and useEfect is called which in turn calls scrollerTransitionComplete - in this function if a contentItem has inMeRef.current with a value of true, the isActive state for item is set to true. (mouse came in and didn't leave - see handle leave above)
+  /* 
+  scrollerTransitionComplete is called from useEffect when isDisabled state changes. If when scroller transition completes the mouse is on a contentItem, we want that item to expand.
 
+  Desc: after slider transition completes, isDisabled changes back to true and useEfect is called which in turn calls scrollerTransitionComplete - in this function if a contentItem has inMeRef.current with a value of true, the isActive state for item is set to true. (mouse came in and didn't leave - see handle leave above)
+*/
   function scrollerTransitionComplete() {
     if (!isDisabled && inMeRef.current) {
       const timer = setTimeout(() => {
@@ -115,7 +127,7 @@ function ContentItem({ content, style, isDisabled, imageConfig }) {
   }
 
   function handleOpenModal() {
-    // This function sets initial dimensions and position for modal based on boundingClientRect of the content item at in its hovered state. Setting is open then triggers useEffect, which deals with the transition to expanded modal.
+    // This function sets initial dimensions and position for modal based on boundingClientRect of the content item at in its hovered state. Setting isOpen then triggers useEffect, which deals with the transition to expanded modal.
     midRef = containerRef.current.getBoundingClientRect()
 
     gsap.set(modalRef.current, { display: 'flex' })

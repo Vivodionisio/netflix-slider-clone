@@ -6,7 +6,7 @@ import {
   Cert15,
   Cert18,
   CertR18
-} from '../components/cert'
+} from '../svg/cert'
 
 export const certBadgeElement = certification => {
   if (certification === 'U') return <CertU />

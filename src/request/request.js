@@ -11,6 +11,7 @@ export const request = [
 ]
 
 export const getReleaseData = {
+  // Elements of a path to be combined with an id.
   path: {
     movies: 'movie/',
     releaseDates: 'release_dates'

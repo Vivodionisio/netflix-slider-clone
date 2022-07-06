@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import ContentItem from './content-item/ContentItem.jsx'
-import { ChevronLeft, ChevronRight } from './sliderBtns'
+import { ChevronLeft, ChevronRight } from '../svg/sliderBtns'
 
 // STATE:
 

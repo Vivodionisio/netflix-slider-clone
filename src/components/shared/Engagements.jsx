@@ -1,5 +1,5 @@
 import React from 'react'
-import { CircleFilled, CircleOutline } from '../circles.js'
+import { CircleFilled, CircleOutline } from '../../svg/circles.js'
 import { IoIosPlay } from 'react-icons/io'
 import { IoAddOutline } from 'react-icons/io5'
 import { BsHandThumbsUp } from 'react-icons/bs'
